@@ -93,7 +93,7 @@ The Parkshark project is supposed to be organized as a project following the SCR
 **Project kickoff guidelines:**
 - Choose a team name and create a Slack channel for your team
 - Define team rules
-    - Daily standup at X
+    - Daily standup at 0900
     - Scrummaster role (fixed, rotating)
     - Ownership of stories
     - Pairing/repairing
