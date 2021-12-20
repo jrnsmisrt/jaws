@@ -101,17 +101,15 @@ public class User {
         return addressList;
     }
 
-    public User withAddressList(List<Address> addressList) {
+    public void setAddressList(List<Address> addressList) {
         this.addressList = addressList;
-        return this;
     }
 
     public ContactInformation getContactInformation() {
         return contactInformation;
     }
 
-    public User withContactInformation(ContactInformation contactInformation) {
+    public void setContactInformation(ContactInformation contactInformation) {
         this.contactInformation = contactInformation;
-        return this;
     }
 }
