@@ -70,7 +70,7 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
      */
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/public-hello-world");
+        //web.ignoring().antMatchers("/public-hello-world");
     }
 
 
