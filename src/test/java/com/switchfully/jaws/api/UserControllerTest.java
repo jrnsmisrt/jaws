@@ -2,7 +2,6 @@ package com.switchfully.jaws.api;
 
 import com.switchfully.jaws.domain.Address;
 import com.switchfully.jaws.domain.ContactInformation;
-import com.switchfully.jaws.domain.User;
 import com.switchfully.jaws.services.user.dto.CreateUserDto;
 import com.switchfully.jaws.services.user.dto.UserDto;
 import io.restassured.RestAssured;
@@ -12,14 +11,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-@DataJpaTest
+//@DataJpaTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class UserControllerTest {
 
