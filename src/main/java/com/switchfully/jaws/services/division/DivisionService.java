@@ -8,11 +8,14 @@ import com.switchfully.jaws.services.division.dtos.DivisionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class DivisionService {
 
-    private DivisionRepository divisionRepository;
-    private DivisionMapper divisionMapper;
+    private final DivisionRepository divisionRepository;
+    private final DivisionMapper divisionMapper;
 
     @Autowired
     public DivisionService(DivisionMapper divisionMapper, DivisionRepository divisionRepository) {
@@ -24,5 +27,11 @@ public class DivisionService {
         Division division= divisionMapper.mapDivisionDtoToDivision(createDivisionDTO);
         divisionRepository.save(division);
         return divisionMapper.mapDivisionToDivisionDto(division);
+    }
+
+    public List<DivisionDto> getAllDivisions() {
+        return divisionRepository.findAll().stream()
+                .map(division -> divisionMapper.mapDivisionToDivisionDto(division))
+                .collect(Collectors.toList());
     }
 }

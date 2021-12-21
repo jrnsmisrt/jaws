@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
 @DataJpaTest
 public class DivisionRepositoryTest {
     private Division division;
@@ -44,4 +46,12 @@ public class DivisionRepositoryTest {
         int amount = divisionRepository.findAll().size();
         Assertions.assertEquals(1, amount);
     }
+
+    @Test
+    public void givenDivision_whenRetrievedFromRepository_thenReturnAll(){
+        divisionRepository.save(division);
+        List<Division> divisions = divisionRepository.findAll();
+        Assertions.assertEquals(List.of(division), divisions);
+    }
+
 }
