@@ -5,15 +5,16 @@ import com.switchfully.jaws.repositories.DivisionRepository;
 import com.switchfully.jaws.services.division.dtos.CreateDivisionDto;
 import com.switchfully.jaws.services.division.dtos.DivisionDto;
 import com.switchfully.jaws.services.division.dtos.DivisionMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DivisionService {
 
-
     private DivisionRepository divisionRepository;
     private DivisionMapper divisionMapper;
 
+    @Autowired
     public DivisionService(DivisionRepository divisionRepository, DivisionMapper divisionMapper) {
         this.divisionRepository = divisionRepository;
         this.divisionMapper = divisionMapper;
