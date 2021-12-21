@@ -28,8 +28,6 @@ import java.time.LocalDate;
 @ActiveProfiles("test")
 //@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class UserControllerTest {
-
-
     @BeforeEach
     void setUp() {
 
