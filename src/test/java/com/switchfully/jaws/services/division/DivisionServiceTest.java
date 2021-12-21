@@ -17,17 +17,15 @@ import static org.mockito.Mockito.when;
 class DivisionServiceTest {
 
 
-    private DivisionService divisionService;
+    private DivisionRepository divisionRepository;
     private DivisionService divisionServiceMock;
-    //private ExternalStockPriceService externalStockPriceServiceMock;
     private DivisionMapper divisionMapperMock;
 
     @BeforeEach
     void setUp() {
-        //divisionServiceMock = mock(DivisionService.class);
-        DivisionRepository divisionRepository = mock(DivisionRepository.class);
+        divisionRepository = mock(DivisionRepository.class);
         divisionMapperMock = mock(DivisionMapper.class);
-        divisionService = new DivisionService(divisionMapperMock, divisionRepository);
+        divisionServiceMock = new DivisionService(divisionMapperMock, divisionRepository);
 
     }
 
