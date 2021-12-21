@@ -8,7 +8,10 @@ import com.switchfully.jaws.services.division.dtos.DivisionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
+@Transactional
 public class DivisionService {
 
     private DivisionRepository divisionRepository;

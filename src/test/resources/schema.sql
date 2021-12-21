@@ -1,6 +1,6 @@
 create table address
 (
-    id_address    serial       not null,
+    id_address    INTEGER auto_increment       not null,
     city          varchar(255) not null,
     country       varchar(255) not null,
     street        varchar(255) not null,
@@ -11,7 +11,7 @@ create table address
 
 create table division
 (
-    id_division       serial       not null,
+    id_division       INTEGER auto_increment           not null,
     director_fullname varchar(255) not null,
     name              varchar(255) not null,
     original_name     varchar(255) not null,
@@ -20,7 +20,7 @@ create table division
 
 create table users
 (
-    id                serial       not null,
+    id                INTEGER auto_increment          not null,
     cellphone_number  varchar(255),
     email             varchar(255),
     home_number       varchar(255),
