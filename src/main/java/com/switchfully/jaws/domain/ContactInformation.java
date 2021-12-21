@@ -9,16 +9,16 @@ import javax.validation.constraints.NotNull;
 @Embeddable
 public final class ContactInformation {
     @Column(name = "cellphone_number")
-    @NotBlank
-    @NotNull
+//    @NotBlank
+//    @NotNull
     private String cellphoneNumber;
 
     @Column(name = "home_number")
     private String homePhoneNumber;
 
     @Column(name = "email")
-    @NotBlank
-    @NotNull
+//    @NotBlank
+//    @NotNull
     @Email
     private String emailAddress;
 

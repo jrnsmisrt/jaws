@@ -16,33 +16,33 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_address")
-    @NotBlank
-    @NotNull
+//    @NotBlank
+//    @NotNull
     private Long id;
 
     @Column(name = "street", nullable = false)
-    @NotBlank
-    @NotNull
+//    @NotBlank
+//    @NotNull
     private String street;
 
     @Column(name = "street_number", nullable = false)
-    @NotBlank
-    @NotNull
+//    @NotBlank
+//    @NotNull
     private String streetNumber;
 
     @Column(name = "city", nullable = false)
-    @NotBlank
-    @NotNull
+    //@NotBlank
+    //@NotNull
     private String city;
 
     @Column(name = "country", nullable = false)
-    @NotBlank
-    @NotNull
+//    @NotBlank
+//    @NotNull
     private String country;
 
     @Column(name = "zip_code", nullable = false)
-    @NotBlank
-    @NotNull
+//    @NotBlank
+//    @NotNull
     private int zipCode;
 
     protected Address() {

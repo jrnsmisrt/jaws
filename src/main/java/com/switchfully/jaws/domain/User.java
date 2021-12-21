@@ -13,34 +13,34 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotBlank
-    @NotNull
+//    @NotBlank
+//    @NotNull
     private Long id;
 
     @Column(name = "first_name", nullable = false)
-    @NotBlank
-    @NotNull
+//    @NotBlank
+//    @NotNull
     private String firstName;
 
     @Column(name = "last_name", nullable = false)
-    @NotBlank
-    @NotNull
+//    @NotBlank
+//    @NotNull
     private String lastName;
 
     @Column(name = "license_plate", nullable = false)
-    @NotBlank
-    @NotNull
+//    @NotBlank
+//    @NotNull
     private String licensePlate;
 
     @Column(name = "registration_date", nullable = false)
-    @NotBlank
-    @NotNull
+//    @NotBlank
+//    @NotNull
     private LocalDate registrationDate;
 
-    @OneToOne
-    @NotBlank
-    @NotNull
-    @JoinColumn(name = "fk_user", nullable = false)
+    @OneToOne( cascade = CascadeType.PERSIST, targetEntity = Address.class)
+//    @NotBlank
+//    @NotNull
+    @JoinColumn(name = "fk_address_id", nullable = false)
     private Address address;
 
     @Embedded

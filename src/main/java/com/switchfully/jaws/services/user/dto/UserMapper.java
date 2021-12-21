@@ -15,7 +15,7 @@ public class UserMapper {
                 .withContactInformation(createUserDto.contactInformation())
                 .withFirstName(createUserDto.firstName())
                 .withLastName(createUserDto.lastName())
-                .withLicensePlate(createUserDto.licensPlate())
+                .withLicensePlate(createUserDto.licensePlate())
                 .build();
     }
 }
