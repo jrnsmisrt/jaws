@@ -5,6 +5,6 @@ import com.switchfully.jaws.domain.ContactInformation;
 
 import java.time.LocalDate;
 
-public record CreateUserDto(Long id, String firstName, String lastName, String licensPlate, Address address,
+public record CreateUserDto(String firstName, String lastName, String licensPlate, Address address,
                       ContactInformation contactInformation, LocalDate registrationDate) {
 }

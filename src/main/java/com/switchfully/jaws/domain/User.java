@@ -1,6 +1,9 @@
 package com.switchfully.jaws.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -10,21 +13,33 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotBlank
+    @NotNull
     private Long id;
 
     @Column(name = "first_name", nullable = false)
+    @NotBlank
+    @NotNull
     private String firstName;
 
     @Column(name = "last_name", nullable = false)
+    @NotBlank
+    @NotNull
     private String lastName;
 
     @Column(name = "license_plate", nullable = false)
+    @NotBlank
+    @NotNull
     private String licensePlate;
 
     @Column(name = "registration_date", nullable = false)
+    @NotBlank
+    @NotNull
     private LocalDate registrationDate;
 
     @OneToOne
+    @NotBlank
+    @NotNull
     @JoinColumn(name = "fk_user", nullable = false)
     private Address address;
 
@@ -44,12 +59,30 @@ public class User {
 
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getLicensePlate() {
+        return licensePlate;
+    }
+
+    public LocalDate getRegistrationDate() {
+        return registrationDate;
+    }
+
     public static class UserBuilder {
         private String firstName;
         private String lastName;
         private String licensePlate;
-
-        private LocalDate registrationDate;
         private Address address;
         private ContactInformation contactInformation;
 
@@ -68,11 +101,6 @@ public class User {
 
         public UserBuilder withLicensePlate(String licensePlate) {
             this.licensePlate = licensePlate;
-            return this;
-        }
-
-        public UserBuilder withRegistrationDate(LocalDate registrationDate) {
-            this.registrationDate = registrationDate;
             return this;
         }
 
