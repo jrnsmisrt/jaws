@@ -5,12 +5,15 @@ import com.switchfully.jaws.domain.Division;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 
-import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import static java.lang.String.format;
 
 @DataJpaTest
 public class DivisionRepositoryTest {
@@ -20,16 +23,19 @@ public class DivisionRepositoryTest {
     @Autowired
     private DivisionRepository divisionRepository;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @BeforeEach
     public void setup() {
         division = new Division.DivisionBuilder()
-                .withName("Maxim")
+                .withName("Monkey")
                 .withDirectorFullName("BossMan")
                 .withOriginalName("Number One")
                 .build();
 
         dummyDivision = new Division.DivisionBuilder()
-                .withName("Maxim")
+                .withName("Monkey")
                 .withDirectorFullName("Lalalala")
                 .withOriginalName("Jack Sparrow")
                 .build();
@@ -48,10 +54,16 @@ public class DivisionRepositoryTest {
     }
 
     @Test
-    public void givenDivision_whenRetrievedFromRepository_thenReturnAll(){
+    public void givenDivision_whenSavedInRepository_thenReturnSameWithId() {
         divisionRepository.save(division);
-        List<Division> divisions = divisionRepository.findAll();
-        Assertions.assertEquals(List.of(division), divisions);
+        entityManager.flush();
+        Division divisionInRepo = divisionRepository.getById(division.getId());
+        Assertions.assertEquals(divisionInRepo, division);
     }
 
+    @Test
+    public void givenNullValue_whenSavedInRepository_thenThrowException() {
+        Executable method = () -> divisionRepository.save(null);
+        Assertions.assertThrows(InvalidDataAccessApiUsageException.class, method, format("Division cannot be null"));
+    }
 }

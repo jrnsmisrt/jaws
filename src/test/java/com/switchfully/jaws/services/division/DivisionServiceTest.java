@@ -9,39 +9,52 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-/*
+@SpringBootTest
 class DivisionServiceTest {
 
+    private Division division;
+    private Division dummyDivision;
+    private CreateDivisionDto createDivisionDto;
 
-    private DivisionService divisionService;
+    private DivisionRepository divisionRepository;
     private DivisionService divisionServiceMock;
-    //private ExternalStockPriceService externalStockPriceServiceMock;
     private DivisionMapper divisionMapperMock;
 
     @BeforeEach
     void setUp() {
-        //divisionServiceMock = mock(DivisionService.class);
-        DivisionRepository divisionRepository = mock(DivisionRepository.class);
+        divisionRepository = mock(DivisionRepository.class);
         divisionMapperMock = mock(DivisionMapper.class);
-        divisionService = new DivisionService(divisionMapperMock, divisionRepository);
+        divisionServiceMock = new DivisionService(divisionMapperMock, divisionRepository);
 
+        division = new Division.DivisionBuilder()
+                .withName("Monkey")
+                .withDirectorFullName("BossMan")
+                .withOriginalName("Number One")
+                .build();
+
+        dummyDivision = new Division.DivisionBuilder()
+                .withName("Monkey")
+                .withDirectorFullName("Lalalala")
+                .withOriginalName("Jack Sparrow")
+                .build();
+
+        createDivisionDto = new CreateDivisionDto("Monkey", "Bossman", "Number One");
     }
 
     @Test
-    public void test() {
-        CreateDivisionDto createDivisionDto = new CreateDivisionDto("testDivision", "Gotham", "batman");
-
-        divisionServiceMock.createDivision(createDivisionDto);
-        //Mockito.verify(divisionServiceMock).connect();
-
+    void givenDivisionRepository_whenDivisionSavedToDb_willReturnDivision() {
+        Mockito.when(divisionRepository.save(division)).thenReturn(division);
     }
 
-
-
-
- */
+    @Test
+    void givenDivisionService_whenDivisionSavedToDb_thenVerifyRepositorySavesEntity() {
+        divisionServiceMock.createDivision(createDivisionDto);
+        Mockito.verify(divisionRepository).save(divisionMapperMock.mapDivisionDtoToDivision(createDivisionDto));
+    }
+}
