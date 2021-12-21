@@ -15,7 +15,7 @@ public class DivisionService {
     private DivisionMapper divisionMapper;
 
     @Autowired
-    public DivisionService(DivisionRepository divisionRepository, DivisionMapper divisionMapper) {
+    public DivisionService(DivisionMapper divisionMapper, DivisionRepository divisionRepository) {
         this.divisionRepository = divisionRepository;
         this.divisionMapper = divisionMapper;
     }
