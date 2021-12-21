@@ -1,4 +1,4 @@
-package com.switchfully.jaws.services;
+package com.switchfully.jaws.services.division;
 
 import org.springframework.stereotype.Service;
 

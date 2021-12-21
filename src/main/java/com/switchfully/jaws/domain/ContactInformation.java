@@ -2,6 +2,7 @@ package com.switchfully.jaws.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.Email;
 
 @Embeddable
 public final class ContactInformation {
@@ -12,6 +13,7 @@ public final class ContactInformation {
     private String homePhoneNumber;
 
     @Column(name = "email")
+    @Email
     private String emailAddress;
 
     protected ContactInformation() {}
