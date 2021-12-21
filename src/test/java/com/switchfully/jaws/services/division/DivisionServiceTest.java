@@ -16,6 +16,9 @@ import static org.mockito.Mockito.when;
 
 class DivisionServiceTest {
 
+    private Division division;
+    private Division dummyDivision;
+    private CreateDivisionDto createDivisionDto;
 
     private DivisionRepository divisionRepository;
     private DivisionService divisionServiceMock;
@@ -27,15 +30,30 @@ class DivisionServiceTest {
         divisionMapperMock = mock(DivisionMapper.class);
         divisionServiceMock = new DivisionService(divisionMapperMock, divisionRepository);
 
+        division = new Division.DivisionBuilder()
+                .withName("Monkey")
+                .withDirectorFullName("BossMan")
+                .withOriginalName("Number One")
+                .build();
+
+        dummyDivision = new Division.DivisionBuilder()
+                .withName("Monkey")
+                .withDirectorFullName("Lalalala")
+                .withOriginalName("Jack Sparrow")
+                .build();
+
+        createDivisionDto = new CreateDivisionDto("Monkey", "Bossman", "Number One");
     }
 
     @Test
-    public void test() {
-        CreateDivisionDto createDivisionDto = new CreateDivisionDto("testDivision", "Gotham", "batman");
+    void givenDivisionRepository_whenDivisionSavedToDb_willReturnDivision() {
+        Mockito.when(divisionRepository.save(division)).thenReturn(division);
+    }
 
+    @Test
+    void givenDivisionService_whenDivisionSavedToDb_thenVerifyRepositorySavesEntity() {
         divisionServiceMock.createDivision(createDivisionDto);
-        //Mockito.verify(divisionServiceMock).connect();
-
+        Mockito.verify(divisionRepository).save(divisionMapperMock.mapDivisionDtoToDivision(createDivisionDto));
     }
 
 
