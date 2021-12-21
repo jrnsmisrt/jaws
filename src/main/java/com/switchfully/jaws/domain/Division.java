@@ -17,13 +17,13 @@ public class Division {
     @Column(name = "id_division", nullable = false, unique = true)
     private Long id;
 
-    @Column(name = "name", nullable = false, unique = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "original_name", nullable = false, unique = false)
+    @Column(name = "original_name", nullable = false)
     private String originalName;
 
-    @Column(name = "director_fullname", nullable = false, unique = true)
+    @Column(name = "director_fullname", nullable = false)
     private String directorFullName;
 
     protected Division() {}

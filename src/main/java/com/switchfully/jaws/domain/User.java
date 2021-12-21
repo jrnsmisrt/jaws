@@ -1,14 +1,6 @@
 package com.switchfully.jaws.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -32,20 +24,21 @@ public class User {
     @Column(name = "registration_date", nullable = false)
     private LocalDate registrationDate;
 
-    @OneToMany
+    @OneToOne
     @JoinColumn(name = "fk_user", nullable = false)
-    private List<Address> addressList;
+    private Address address;
 
     @Embedded
     private ContactInformation contactInformation;
 
-    protected User() {}
+    protected User() {
+    }
 
     private User(UserBuilder builder) {
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;
         this.contactInformation = builder.contactInformation;
-        this.addressList = builder.addressList;
+        this.address = builder.address;
         this.licensePlate = builder.licensePlate;
         this.registrationDate = LocalDate.now();
 
@@ -57,10 +50,11 @@ public class User {
         private String licensePlate;
 
         private LocalDate registrationDate;
-        private List<Address> addressList;
+        private Address address;
         private ContactInformation contactInformation;
 
-        public UserBuilder() {}
+        public UserBuilder() {
+        }
 
         public UserBuilder withFirstName(String firstName) {
             this.firstName = firstName;
@@ -82,8 +76,8 @@ public class User {
             return this;
         }
 
-        public UserBuilder withAddressList(List<Address> addressList) {
-            this.addressList = addressList;
+        public UserBuilder withAddress(Address address) {
+            this.address = address;
             return this;
         }
 
@@ -97,12 +91,12 @@ public class User {
         }
     }
 
-    public List<Address> getAddressList() {
-        return addressList;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setAddressList(List<Address> addressList) {
-        this.addressList = addressList;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public ContactInformation getContactInformation() {

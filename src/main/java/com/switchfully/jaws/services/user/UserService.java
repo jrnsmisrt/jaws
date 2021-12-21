@@ -1,4 +1,4 @@
-package com.switchfully.jaws.services;
+package com.switchfully.jaws.services.user;
 
 import org.springframework.stereotype.Service;
 
