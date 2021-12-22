@@ -21,7 +21,7 @@ class UserServiceTest {
 
     private UserRepository userRepository;
     private UserService userService;
-    private UserMapper userMapper = new UserMapper();
+    private final UserMapper userMapper = new UserMapper();
 
 
     private final Address address = new Address.AddressBuilder()
@@ -58,11 +58,11 @@ class UserServiceTest {
 
     }
 
-    @Test
-    void addingUserToDatabaseWillReturnCorrectUser() {
-        Mockito.when(userRepository.save(testUser)).thenReturn(testUser);
-        Assertions.assertThat(userService.addUser(testUser)).isEqualTo(testUser);
-    }
+//    @Test
+//    void addingUserToDatabaseWillReturnCorrectUser() {
+//        Mockito.when(userRepository.save(testUser)).thenReturn(testUser);
+//        Assertions.assertThat(userService.addUser(testUser)).isEqualTo(testUser);
+//    }
 
 //    @Test
 //    void addingUserToDatabaseWillReturnCorrectUser() {
