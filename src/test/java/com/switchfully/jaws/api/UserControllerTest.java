@@ -1,6 +1,5 @@
 package com.switchfully.jaws.api;
 
-import com.switchfully.jaws.JawsApplication;
 import com.switchfully.jaws.domain.ContactInformation;
 import com.switchfully.jaws.services.user.dto.CreateAddressDto;
 import com.switchfully.jaws.services.user.dto.CreateUserDto;
@@ -11,22 +10,14 @@ import io.restassured.http.ContentType;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 
-@SpringBootTest( webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-@ActiveProfiles("test")
-@Transactional
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+//@ActiveProfiles("test")
 class UserControllerTest {
 
     private final UserMapper userMapper = new UserMapper();
@@ -38,7 +29,7 @@ class UserControllerTest {
 
     @Test
     void name() {
-        CreateAddressDto createAddressDto = new CreateAddressDto("husestraat","22","Gent","Belgium",9000);
+        CreateAddressDto createAddressDto = new CreateAddressDto("husestraat", "22", "Gent", "Belgium", 9000);
         ContactInformation contactInformation = new ContactInformation.ContactInfoBuilder()
                 .withCellPhoneNumber("0458235")
                 .withEmailAddress("Jeroen.smissaert@outlook.com")
@@ -73,4 +64,9 @@ class UserControllerTest {
         Assertions.assertThat(userDto.contactInformationDto()).isEqualTo(createUserDto.contactInformationDto());
         Assertions.assertThat(userDto.registrationDate()).isEqualTo(LocalDate.now());
     }
+
+
+
+    // extra test if something is null that it returns the correct exception
+    // Add user test for email on User class
 }
