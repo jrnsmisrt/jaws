@@ -1,33 +1,21 @@
 package com.switchfully.jaws.services.user;
 
-import com.switchfully.jaws.domain.Address;
-import com.switchfully.jaws.domain.ContactInformation;
-import com.switchfully.jaws.domain.User;
+import com.switchfully.jaws.domain.user.Address;
+import com.switchfully.jaws.domain.user.ContactInformation;
+import com.switchfully.jaws.domain.user.User;
 import com.switchfully.jaws.repositories.UserRepository;
-import com.switchfully.jaws.services.user.dto.ContactInformationDto;
-import com.switchfully.jaws.services.user.dto.CreateAddressDto;
-import com.switchfully.jaws.services.user.dto.CreateUserDto;
-import com.switchfully.jaws.services.user.dto.UserMapper;
-import com.switchfully.jaws.services.division.dtos.DivisionMapper;
 import com.switchfully.jaws.services.user.dto.*;
-import com.switchfully.jaws.services.user.dto.UserMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ActiveProfiles;
 
-import static org.mockito.Mockito.mock;
-//@DataJpaTest
-//@ActiveProfiles("test")
 class UserServiceTest {
     private UserRepository userRepository;
     private UserService userService;
-    private final UserMapper userMapper = new UserMapper();
+    private UserMapper userMapper;
 
-
-    private final Address address = new Address.AddressBuilder()
+    private Address address = new Address.AddressBuilder()
             .withCity("Gent")
             .withCountry("Belgium")
             .withStreet("husestraat")
@@ -35,13 +23,13 @@ class UserServiceTest {
             .withZipCode(9000)
             .build();
 
-    private final ContactInformation contactInformation = new ContactInformation.ContactInfoBuilder()
+    private ContactInformation contactInformation = new ContactInformation.ContactInfoBuilder()
             .withCellPhoneNumber("0458235")
             .withEmailAddress("Jeroen.smissaert@outlook.com")
             .withHomePhoneNumber("5405465")
             .build();
 
-    private final User testUser = new User.UserBuilder()
+    private User testUser = new User.UserBuilder()
             .withAddress(address)
             .withContactInformation(contactInformation)
             .withFirstName("Jeroen")
@@ -57,15 +45,32 @@ class UserServiceTest {
     @BeforeEach
     void setUpStockService() {
         userRepository = Mockito.mock(UserRepository.class);
+        userMapper = Mockito.mock(UserMapper.class);
         userService = new UserService(userRepository, userMapper);
-
     }
 
 //    @Test
 //    void addingUserToDatabaseWillReturnCorrectUser() {
 //        Mockito.when(userRepository.save(testUser)).thenReturn(testUser);
-//        Assertions.assertThat(userService.addUser(testUser)).isEqualTo(testUser);
+//        Mockito.when(userMapper.toUser(createUserDto)).thenReturn(testUser);
+////        Mockito.when(userMapper.toUserDto(testUser)).thenReturn();
+//
+//        Assertions.assertThat(userService.addUser(createUserDto)).isEqualTo(testUser);
 //    }
+
+    @Test
+    void mockTest_WhenSavingUser_CheckIfSaveFunctionOfRepositoryIsCalled(){
+        userService.addUser(createUserDto);
+        Mockito.verify(userRepository).save(userMapper.toUser(createUserDto));
+    }
+
+    @Test
+    void subtest() {
+        User user = userMapper.toUser(createUserDto);
+        Mockito.when(userRepository.save(user)).thenReturn(user);
+        UserDto receivedUserDto = userService.addUser(createUserDto);
+        Assertions.assertThat(receivedUserDto).isEqualTo(userMapper.toUserDto(userMapper.toUser(createUserDto)));
+    }
 
 //    @Test
 //    void addingUserToDatabaseWillReturnCorrectUser() {
