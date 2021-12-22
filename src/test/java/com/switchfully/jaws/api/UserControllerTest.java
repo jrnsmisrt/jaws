@@ -17,7 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.time.LocalDate;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-//@ActiveProfiles("test")
+@ActiveProfiles("test")
 class UserControllerTest {
 
     private final UserMapper userMapper = new UserMapper();
@@ -28,7 +28,7 @@ class UserControllerTest {
     }
 
     @Test
-    void name() {
+    void givenCorrectInformation_RegisterMemberWorks() {
         CreateAddressDto createAddressDto = new CreateAddressDto("husestraat", "22", "Gent", "Belgium", 9000);
         ContactInformation contactInformation = new ContactInformation.ContactInfoBuilder()
                 .withCellPhoneNumber("0458235")
@@ -65,8 +65,29 @@ class UserControllerTest {
         Assertions.assertThat(userDto.registrationDate()).isEqualTo(LocalDate.now());
     }
 
+    @Test
+    void givenStreetNumberNull_RegisterMemberWorks_GivesException() {
+        CreateAddressDto createAddressDto = new CreateAddressDto("husestraat", null, "Gent", "Belgium", 9000);
+        ContactInformation contactInformation = new ContactInformation.ContactInfoBuilder()
+                .withCellPhoneNumber("0458235")
+                .withEmailAddress("Jeroen.smissaert@outlook.com")
+                .withHomePhoneNumber("5405465")
+                .build();
+
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, userMapper.toContactInformationDto(contactInformation));
 
 
-    // extra test if something is null that it returns the correct exception
+        RestAssured
+                .given()
+                .body(createUserDto)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .when()
+                .port(8080)
+                .post("/users")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
     // Add user test for email on User class
 }
