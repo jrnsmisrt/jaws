@@ -1,11 +1,15 @@
 package com.switchfully.jaws.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -26,18 +30,25 @@ public class Division {
     @Column(name = "director_fullname", nullable = false)
     private String directorFullName;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "parent_div_fk", referencedColumnName = "id_division")
+    @Column(name = "parent_division_id")
+    private List<Division> parentDivisionId;
+
     protected Division() {}
 
     private Division(DivisionBuilder builder) {
         this.name = builder.name;
         this.originalName = builder.originalName;
         this.directorFullName = builder.directorFullName;
+        this.parentDivisionId = builder.parentDivisionId;
     }
 
     public static class DivisionBuilder {
         private String name;
         private String originalName;
         private String directorFullName;
+        private List<Division> parentDivisionId;
 
         public DivisionBuilder() {
         }
@@ -54,6 +65,11 @@ public class Division {
 
         public DivisionBuilder withDirectorFullName(String directorFullName) {
             this.directorFullName = directorFullName;
+            return this;
+        }
+
+        public DivisionBuilder withParentDivisionId(List<Division> parentDivisionId) {
+            this.parentDivisionId = parentDivisionId;
             return this;
         }
 
@@ -82,6 +98,7 @@ public class Division {
                 ", name='" + name + '\'' +
                 ", originalName='" + originalName + '\'' +
                 ", directorFullName='" + directorFullName + '\'' +
+                ", parentDivisionId=" + parentDivisionId +
                 '}';
     }
 
@@ -99,5 +116,9 @@ public class Division {
 
     public String getDirectorFullName() {
         return directorFullName;
+    }
+
+    public List<Division> getParentDivisionId() {
+        return parentDivisionId;
     }
 }

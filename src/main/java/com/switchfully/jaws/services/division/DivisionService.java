@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-//@Transactional
+@Transactional
 public class DivisionService {
 
     private DivisionRepository divisionRepository;
@@ -43,7 +43,7 @@ public class DivisionService {
     }
 
 
-    private boolean nameDoesNotExists(CreateDivisionDto createDivisionDto) {
+    private boolean nameDoesNotExists(CreateDivisionDto createDivisionDto) {//TODO
         return divisionRepository.findAll().stream()
                 .map(Division::getName)
                 .noneMatch(name -> name.equalsIgnoreCase(divisionMapper.mapDivisionDtoToDivision(createDivisionDto).getName()));

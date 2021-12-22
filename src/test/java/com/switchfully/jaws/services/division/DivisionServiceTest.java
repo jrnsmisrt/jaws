@@ -48,7 +48,7 @@ class DivisionServiceTest {
                 .withOriginalName("Jack Sparrow")
                 .build();
 
-        createDivisionDto = new CreateDivisionDto("Monkey", "Bossman", "Number One");
+//        createDivisionDto = new CreateDivisionDto("Monkey", "Bossman", "Number One", null);
     }
 
     @Test
@@ -56,7 +56,7 @@ class DivisionServiceTest {
         //Mockito.when(divisionRepository.save(division)).thenReturn(division);
         divisionRepository.save(division);
         DivisionDto divisionDto = divisionServiceMock.createDivision(createDivisionDto);
-        Assertions.assertThat(divisionDto.name().equalsIgnoreCase(division.getName()));
+        Assertions.assertThat(divisionDto.getName().equalsIgnoreCase(division.getName()));
 
     }
 
