@@ -74,4 +74,21 @@ public class Division {
     public int hashCode() {
         return Objects.hash(name);
     }
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getOriginalName() {
+        return originalName;
+    }
+
+    public String getDirectorFullName() {
+        return directorFullName;
+    }
 }
