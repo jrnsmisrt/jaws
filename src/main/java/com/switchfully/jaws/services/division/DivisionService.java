@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,12 +29,27 @@ public class DivisionService {
 
     public DivisionDto createDivision(CreateDivisionDto createDivisionDTO) {
         if (nameDoesNotExists(createDivisionDTO)) {
-            Division division = divisionMapper.mapDivisionDtoToDivision(createDivisionDTO);
-            divisionRepository.save(division);
-            return divisionMapper.mapDivisionToDivisionDto(division);
-        } else {
-            throw new IllegalArgumentException("division already exist");
+            return getDivisionDto(createDivisionDTO);
+        } else if (isParentDivision(createDivisionDTO)) {
+            divisionRepository.findAll().stream()
+                    .filter(division -> division.getName().equalsIgnoreCase(createDivisionDTO.getName()))
+                    .map(Division::getId)
+                    .findAny()
+                    .ifPresent( id -> divisionRepository.deleteById(id));
+            return getDivisionDto(createDivisionDTO);
         }
+        throw new IllegalArgumentException("Could not add division");
+    }
+
+    private DivisionDto getDivisionDto(CreateDivisionDto createDivisionDTO) {
+        Division division = divisionMapper.mapDivisionDtoToDivision(createDivisionDTO);
+        divisionRepository.save(division);
+        return divisionMapper.mapDivisionToDivisionDto(division);
+    }
+
+    private boolean isParentDivision(CreateDivisionDto createDivisionDTO) {
+        Optional<Division> optDivision = divisionRepository.findDivisionByName(createDivisionDTO.getName());
+        return optDivision.filter(division -> division.getSubDivisions() != null).isPresent();
     }
 
     public List<DivisionDto> getAllDivisions() {

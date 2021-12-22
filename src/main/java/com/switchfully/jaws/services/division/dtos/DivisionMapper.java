@@ -18,7 +18,7 @@ public class DivisionMapper {
     }
 
     public DivisionDto mapDivisionToDivisionDto(Division division) {
-        if(Optional.ofNullable(division.getParentDivisionId()).isPresent()) {
+        if(Optional.ofNullable(division.getSubDivisions()).isPresent()) {
             return mapDivisionToDivisionDtoWithSubdivisions(division);
         }
         return mapDivisionToDivisionDtoWithoutSubdivisions(division);
@@ -37,7 +37,7 @@ public class DivisionMapper {
                 .withName(division.getName())
                 .withDirectorFullName(division.getDirectorFullName())
                 .withOriginalName(division.getOriginalName())
-                .withDivisionDtoList(division.getParentDivisionId().stream()
+                .withDivisionDtoList(division.getSubDivisions().stream()
                         .map(this::mapDivisionToDivisionDtoWithoutSubdivisions)
                         .collect(Collectors.toList()))
                 .build();

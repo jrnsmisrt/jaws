@@ -33,7 +33,7 @@ public class Division {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "parent_div_fk", referencedColumnName = "id_division")
     @Column(name = "parent_division_id")
-    private List<Division> parentDivisionId;
+    private List<Division> subDivisions;
 
     protected Division() {}
 
@@ -41,7 +41,7 @@ public class Division {
         this.name = builder.name;
         this.originalName = builder.originalName;
         this.directorFullName = builder.directorFullName;
-        this.parentDivisionId = builder.parentDivisionId;
+        this.subDivisions = builder.parentDivisionId;
     }
 
     public static class DivisionBuilder {
@@ -98,7 +98,7 @@ public class Division {
                 ", name='" + name + '\'' +
                 ", originalName='" + originalName + '\'' +
                 ", directorFullName='" + directorFullName + '\'' +
-                ", parentDivisionId=" + parentDivisionId +
+                ", parentDivisionId=" + subDivisions +
                 '}';
     }
 
@@ -118,7 +118,7 @@ public class Division {
         return directorFullName;
     }
 
-    public List<Division> getParentDivisionId() {
-        return parentDivisionId;
+    public List<Division> getSubDivisions() {
+        return subDivisions;
     }
 }
