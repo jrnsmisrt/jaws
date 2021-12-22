@@ -19,7 +19,7 @@ public class SecurityTestController {
         this.keycloakService = keycloakService;
     }
 
-    @GetMapping()
+    @PostMapping()
     @ResponseStatus(HttpStatus.OK)
     void test() {
         KeycloakUserDTO user = new KeycloakUserDTO("Léonie", "Emil", Role.MANAGER);

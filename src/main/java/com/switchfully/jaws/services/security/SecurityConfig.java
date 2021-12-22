@@ -28,7 +28,7 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
      * This is meant to add the role mapper to keycloak allowing you to map keycloak roles to your own features
      */
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    public void configureGlobal(AuthenticationManagerBuilder auth) {
         KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
         keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(collection ->
                 collection.stream()
@@ -69,8 +69,8 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
      * Configure here the endpoints that need to be anonymously available
      */
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        //web.ignoring().antMatchers("/public-hello-world");
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers("/test");
     }
 
 

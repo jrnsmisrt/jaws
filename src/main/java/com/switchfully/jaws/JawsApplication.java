@@ -24,8 +24,8 @@ public class  JawsApplication {
         return KeycloakBuilder.builder()
                 .serverUrl("https://keycloak.switchfully.com/auth")
                 .grantType(OAuth2Constants.PASSWORD)
-                .realm("java-oct-2021")
-                .clientId("parkshark-jaws")
+                .realm("master")
+                .clientId("admin-cli")
                 .username(adminUsername)
                 .password(adminPassword)
                 .resteasyClient(
