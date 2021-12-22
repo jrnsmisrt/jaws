@@ -32,7 +32,6 @@ public final class ContactInformation {
         return emailAddress;
     }
 
-
     private ContactInformation(ContactInfoBuilder builder) {
         this.cellphoneNumber = builder.cellPhoneNumber;
         this.homePhoneNumber = builder.homePhoneNumber;
@@ -85,15 +84,4 @@ public final class ContactInformation {
         }
     }
 
-    public String getCellphoneNumber() {
-        return cellphoneNumber;
-    }
-
-    public String getHomePhoneNumber() {
-        return homePhoneNumber;
-    }
-
-    public String getEmailAddress() {
-        return emailAddress;
-    }
 }
