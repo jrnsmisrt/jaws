@@ -8,6 +8,7 @@ import com.switchfully.jaws.services.user.dto.UserMapper;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,8 @@ import java.time.LocalDate;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @ActiveProfiles("test")
 class UserControllerTest {
-
+    @Autowired
+    private UserController userController;
     private final UserMapper userMapper = new UserMapper();
 
     @Value("${server.port}")
@@ -31,8 +33,7 @@ class UserControllerTest {
     void setUp() {
 
     }
-    @Value("${server.port}")
-    private int port;
+
 
     @Test
     void givenCorrectInformation_RegisterMemberWorks() {
@@ -117,7 +118,7 @@ class UserControllerTest {
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON)
                 .when()
-                .port(8080)
+                .port(port)
                 .post("/users")
                 .then()
                 .assertThat()
