@@ -75,6 +75,15 @@ public class Division {
         return Objects.hash(name);
     }
 
+    @Override
+    public String toString() {
+        return "Division{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", originalName='" + originalName + '\'' +
+                ", directorFullName='" + directorFullName + '\'' +
+                '}';
+    }
 
     public Long getId() {
         return id;

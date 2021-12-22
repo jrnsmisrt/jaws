@@ -1,3 +1,7 @@
+drop table if exists users;
+drop table if exists address;
+drop table if exists division;
+
 create table address
 (
     id_address    INTEGER auto_increment       not null,
