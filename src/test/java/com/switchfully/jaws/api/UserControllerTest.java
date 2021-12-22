@@ -1,57 +1,45 @@
 package com.switchfully.jaws.api;
 
-import com.switchfully.jaws.domain.Address;
+import com.switchfully.jaws.JawsApplication;
 import com.switchfully.jaws.domain.ContactInformation;
-import com.switchfully.jaws.repositories.UserRepository;
+import com.switchfully.jaws.services.user.dto.CreateAddressDto;
 import com.switchfully.jaws.services.user.dto.CreateUserDto;
 import com.switchfully.jaws.services.user.dto.UserDto;
+import com.switchfully.jaws.services.user.dto.UserMapper;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-
+import org.springframework.test.context.web.WebAppConfiguration;
 import java.time.LocalDate;
 
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-//@RunWith(SpringRunner.class)
-@DataJpaTest
-@ActiveProfiles("test")
-//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@SpringBootTest(classes = JawsApplication.class)
+@WebAppConfiguration
+@RunWith(SpringRunner.class)
 class UserControllerTest {
+
+    private final UserMapper userMapper = new UserMapper();
+
     @BeforeEach
     void setUp() {
 
     }
-    @Autowired
-    private UserRepository userRepository;
 
     @Test
     void name() {
-        Address address = new Address.AddressBuilder()
-                .withCity("Gent")
-                .withCountry("Belgium")
-                .withStreet("husestraat")
-                .withStreetNumber("22")
-                .withZipCode(9000)
-                .build();
-
+        CreateAddressDto createAddressDto = new CreateAddressDto("husestraat","22","Gent","Belgium",9000);
         ContactInformation contactInformation = new ContactInformation.ContactInfoBuilder()
                 .withCellPhoneNumber("0458235")
                 .withEmailAddress("Jeroen.smissaert@outlook.com")
                 .withHomePhoneNumber("5405465")
                 .build();
 
-        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", address, contactInformation, LocalDate.now());
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, userMapper.toContactInformationDto(contactInformation));
 
 
         UserDto userDto = RestAssured
@@ -68,12 +56,15 @@ class UserControllerTest {
                 .extract()
                 .as(UserDto.class);
 
-        Assertions.assertThat(userDto.address()).isEqualTo(createUserDto.address());
+        Assertions.assertThat(userDto.addressDto().city()).isEqualTo(createUserDto.addressDto().city());
+        Assertions.assertThat(userDto.addressDto().country()).isEqualTo(createUserDto.addressDto().country());
+        Assertions.assertThat(userDto.addressDto().street()).isEqualTo(createUserDto.addressDto().street());
+        Assertions.assertThat(userDto.addressDto().streetNumber()).isEqualTo(createUserDto.addressDto().streetNumber());
+        Assertions.assertThat(userDto.addressDto().zipCode()).isEqualTo(createUserDto.addressDto().zipCode());
         Assertions.assertThat(userDto.firstName()).isEqualTo(createUserDto.firstName());
         Assertions.assertThat(userDto.lastName()).isEqualTo(createUserDto.lastName());
         Assertions.assertThat(userDto.licensePlate()).isEqualTo(createUserDto.licensePlate());
-        Assertions.assertThat(userDto.contactInformation()).isEqualTo(createUserDto.contactInformation());
-        Assertions.assertThat(userDto.registrationDate()).isEqualTo(createUserDto.registrationDate());
-
+        Assertions.assertThat(userDto.contactInformationDto()).isEqualTo(createUserDto.contactInformationDto());
+        Assertions.assertThat(userDto.registrationDate()).isEqualTo(LocalDate.now());
     }
 }

@@ -1,18 +1,8 @@
 package com.switchfully.jaws.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
@@ -21,34 +11,23 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @NotBlank
-//    @NotNull
     private Long id;
 
     @Column(name = "first_name", nullable = false)
-//    @NotBlank
-//    @NotNull
     private String firstName;
 
     @Column(name = "last_name", nullable = false)
-//    @NotBlank
-//    @NotNull
     private String lastName;
 
     @Column(name = "license_plate", nullable = false)
-//    @NotBlank
-//    @NotNull
     private String licensePlate;
 
-    @Column(name = "registration_date", nullable = false)
-//    @NotBlank
-//    @NotNull
+    @Column(name = "registration_date")
     private LocalDate registrationDate;
 
-    @OneToOne( cascade = CascadeType.PERSIST, targetEntity = Address.class)
-//    @NotBlank
-//    @NotNull
-    @JoinColumn(name = "fk_address_id", nullable = false)
+    @JsonManagedReference
+    @OneToOne( cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "fk_address_id",nullable = false)
     private Address address;
 
     @Embedded
@@ -131,15 +110,7 @@ public class User {
         return address;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
     public ContactInformation getContactInformation() {
         return contactInformation;
-    }
-
-    public void setContactInformation(ContactInformation contactInformation) {
-        this.contactInformation = contactInformation;
     }
 }
