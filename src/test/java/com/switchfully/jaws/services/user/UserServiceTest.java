@@ -4,11 +4,12 @@ import com.switchfully.jaws.domain.Address;
 import com.switchfully.jaws.domain.ContactInformation;
 import com.switchfully.jaws.domain.User;
 import com.switchfully.jaws.repositories.UserRepository;
-import com.switchfully.jaws.services.division.dtos.DivisionMapper;
+import com.switchfully.jaws.services.common.dto.AddressMapper;
+import com.switchfully.jaws.services.common.dto.ContactInformationDto;
+import com.switchfully.jaws.services.common.dto.ContactInformationMapper;
+import com.switchfully.jaws.services.common.dto.CreateAddressDto;
 import com.switchfully.jaws.services.user.dto.*;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -20,7 +21,7 @@ class UserServiceTest {
 
     private UserRepository userRepository;
     private UserService userService;
-    private UserMapper userMapper = new UserMapper();
+    private UserMapper userMapper = new UserMapper(new AddressMapper(), new ContactInformationMapper());
 
 
     private final Address address = new Address.AddressBuilder()
@@ -53,7 +54,7 @@ class UserServiceTest {
     @BeforeEach
     void setUpStockService() {
         userRepository = Mockito.mock(UserRepository.class);
-        userService = new UserService(userRepository);
+        userService = new UserService(userRepository, userMapper);
     }
 
 //    @Test

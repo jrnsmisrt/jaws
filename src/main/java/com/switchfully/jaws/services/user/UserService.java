@@ -6,6 +6,7 @@ import com.switchfully.jaws.repositories.UserRepository;
 import com.switchfully.jaws.services.user.dto.CreateUserDto;
 import com.switchfully.jaws.services.user.dto.UserDto;
 import com.switchfully.jaws.services.user.dto.UserMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,11 +16,12 @@ import java.util.List;
 @Transactional
 public class UserService {
     private final UserRepository userRepository;
-    private final UserMapper userMapper = new UserMapper();
+    private final UserMapper userMapper;
 
-
-    public UserService(UserRepository userRepository) {
+    @Autowired
+    public UserService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
+        this.userMapper = userMapper;
     }
 
     public List<User> getAllUser() {
@@ -29,12 +31,11 @@ public class UserService {
     public UserDto addUser(CreateUserDto createUserDto) {
         User user = userMapper.toUser(createUserDto);
         if (getAllUser().contains(user)) {
-            throw new ObjectAlreadyExist("User" + createUserDto.toString());
+            throw new ObjectAlreadyExist("User" + createUserDto);
         }
 
         User userOut = userRepository.save(user);
-        UserDto userDto = userMapper.toUserDto(userOut);
 
-        return userDto;
+        return userMapper.toUserDto(userOut);
     }
 }

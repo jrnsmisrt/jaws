@@ -1,7 +1,10 @@
 package com.switchfully.jaws.api;
 
 import com.switchfully.jaws.domain.ContactInformation;
-import com.switchfully.jaws.services.user.dto.CreateAddressDto;
+import com.switchfully.jaws.services.common.dto.AddressMapper;
+import com.switchfully.jaws.services.common.dto.ContactInformationDto;
+import com.switchfully.jaws.services.common.dto.ContactInformationMapper;
+import com.switchfully.jaws.services.common.dto.CreateAddressDto;
 import com.switchfully.jaws.services.user.dto.CreateUserDto;
 import com.switchfully.jaws.services.user.dto.UserDto;
 import com.switchfully.jaws.services.user.dto.UserMapper;
@@ -20,7 +23,7 @@ import java.time.LocalDate;
 @ActiveProfiles("test")
 class UserControllerTest {
 
-    private final UserMapper userMapper = new UserMapper();
+    private final UserMapper userMapper = new UserMapper(new AddressMapper(), new ContactInformationMapper());
 
     @BeforeEach
     void setUp() {
@@ -36,7 +39,9 @@ class UserControllerTest {
                 .withHomePhoneNumber("5405465")
                 .build();
 
-        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, userMapper.toContactInformationDto(contactInformation));
+        ContactInformationDto contactInformationDto = new ContactInformationMapper().mapEntityToDto(contactInformation);
+
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, contactInformationDto);
 
 
         UserDto userDto = RestAssured
@@ -74,7 +79,9 @@ class UserControllerTest {
                 .withHomePhoneNumber("5405465")
                 .build();
 
-        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, userMapper.toContactInformationDto(contactInformation));
+        ContactInformationDto contactInformationDto = new ContactInformationMapper().mapEntityToDto(contactInformation);
+
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, contactInformationDto);
 
 
         RestAssured
