@@ -9,13 +9,17 @@ import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.test.context.ActiveProfiles;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import java.util.List;
+
 import static java.lang.String.format;
 
 @DataJpaTest
+@ActiveProfiles("test")
 public class DivisionRepositoryTest {
     private Division division;
     private Division dummyDivision;
