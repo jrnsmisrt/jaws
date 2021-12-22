@@ -20,4 +20,8 @@ public class AddressMapper {
         return new AddressDto(address.getId(), address.getStreet(), address.getStreetNumber(), address.getCity(), address.getCountry(), address.getZipCode());
     }
 
+    public CreateAddressDto mapEntityToCreateDto(Address address) {
+        return new CreateAddressDto(address.getStreet(), address.getStreetNumber(), address.getCity(), address.getCountry(), address.getZipCode());
+    }
+
 }

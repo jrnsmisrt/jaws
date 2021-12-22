@@ -1,68 +1,46 @@
 package com.switchfully.jaws.services.parkingLot.dtos;
 
 import com.switchfully.jaws.domain.Address;
-import com.switchfully.jaws.domain.ContactInformation;
-import com.switchfully.jaws.domain.Name;
 import com.switchfully.jaws.domain.parkingLot.Category;
 import com.switchfully.jaws.domain.parkingLot.ContactPerson;
 import com.switchfully.jaws.domain.parkingLot.ParkingLot;
+import com.switchfully.jaws.services.common.dto.AddressMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ParkingLotMapper {
 
-    public ParkingLot mapCreateDtoToEntity(CreateParkingLotDto createParkingLotDto) {
-        Name contactPersonName = new Name(createParkingLotDto.contactPerson().lastName(), createParkingLotDto.contactPerson().firstName());
-        ContactInformation contactPersonContactInformation =
-                new ContactInformation.ContactInfoBuilder()
-                        .withCellPhoneNumber(createParkingLotDto.contactPerson().cellphoneNumber())
-                        .withHomePhoneNumber(createParkingLotDto.contactPerson().homePhoneNumber())
-                        .withEmailAddress(createParkingLotDto.contactPerson().emailAddress())
-                        .build();
-        Address contactPersonAddress = new Address.AddressBuilder()
-                .withStreet(createParkingLotDto.contactPerson().address().street())
-                .withStreetNumber(createParkingLotDto.contactPerson().address().streetNumber())
-                .withCity(createParkingLotDto.contactPerson().address().city())
-                .withCountry(createParkingLotDto.contactPerson().address().country())
-                .withZipCode(createParkingLotDto.contactPerson().address().zipCode())
-                .build();
+    private final AddressMapper addressMapper;
+    private final ContactPersonMapper contactPersonMapper;
 
-        Address parkingLotAddress = new Address.AddressBuilder()
-                .withStreet(createParkingLotDto.address().street())
-                .withStreetNumber(createParkingLotDto.address().streetNumber())
-                .withCity(createParkingLotDto.address().city())
-                .withCountry(createParkingLotDto.address().country())
-                .withZipCode(createParkingLotDto.address().zipCode())
-                .build();
+    @Autowired
+    public ParkingLotMapper(AddressMapper addressMapper, ContactPersonMapper contactPersonMapper) {
+        this.addressMapper = addressMapper;
+        this.contactPersonMapper = contactPersonMapper;
+    }
+
+    public ParkingLot mapCreateDtoToEntity(CreateParkingLotDto createParkingLotDto) {
+        ContactPerson contactPerson = contactPersonMapper.mapCreateDtoToEntity(createParkingLotDto.contactPerson());
+        Address parkingLotAddress = addressMapper.mapCreateDtoToEntity(createParkingLotDto.address());
 
         return new ParkingLot(createParkingLotDto.name(),
                 Category.valueOf(createParkingLotDto.category()),
                 createParkingLotDto.maxCapacity(),
-                new ContactPerson(contactPersonName, contactPersonContactInformation, contactPersonAddress),
+                contactPerson,
                 parkingLotAddress,
                 createParkingLotDto.pricePerHour());
     }
 
     public ParkingLotDto mapEntityToDto(ParkingLot parkingLot) {
-        ContactPersonDto contactPersonDto = new ContactPersonDto(parkingLot.getContactPerson().getName().getLastName(),
-                parkingLot.getContactPerson().getName().getFirstName(),
-                parkingLot.getContactPerson().getContactInformation().getCellphoneNumber(),
-                parkingLot.getContactPerson().getContactInformation().getHomePhoneNumber(),
-                parkingLot.getContactPerson().getContactInformation().getEmailAddress(),
-                mapAddressToDto(parkingLot.getContactPerson().getAddress()));
-
-
+        CreateContactPersonDto contactPersonDto = contactPersonMapper.mapEntityToCreateDto(parkingLot.getContactPerson());
 
         return new ParkingLotDto(parkingLot.getId(),
                 parkingLot.getName(),
                 parkingLot.getCategory(),
                 parkingLot.getMaxCapacity(),
                 contactPersonDto,
-                mapAddressToDto(parkingLot.getAddress()),
+                addressMapper.mapEntityToDto(parkingLot.getAddress()),
                 parkingLot.getPricePerHour());
-    }
-
-    public AddressDto mapAddressToDto(Address address) {
-        return new AddressDto(address.getStreet(), address.getStreetNumber(), address.getCity(), address.getCountry(), address.getZipCode());
     }
 }
