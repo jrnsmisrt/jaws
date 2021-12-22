@@ -11,14 +11,14 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.mockito.Mockito.mock;
-@DataJpaTest
-@ActiveProfiles("test")
+//@DataJpaTest
+//@ActiveProfiles("test")
 class UserServiceTest {
-
     private UserRepository userRepository;
     private UserService userService;
     private final UserMapper userMapper = new UserMapper();
@@ -90,7 +90,8 @@ class UserServiceTest {
 //
 //    @Test
 //    void whenGetAllMembersOverviewIsCalled_StringShouldContainSpecifiedUser(){
-//        userService.addUser(testUser);
+//        Mockito.when(userRepository.findAll()).thenReturn();
+//        userService.addUser(createUserDto);
 //        Assertions.assertThat(userService.getAllMembersOverview()).contains(testUser.getFirstName());
 //
 //    }
