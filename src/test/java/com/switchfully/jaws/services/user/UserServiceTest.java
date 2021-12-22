@@ -10,6 +10,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.List;
+
 class UserServiceTest {
     private UserRepository userRepository;
     private UserService userService;
@@ -29,9 +31,23 @@ class UserServiceTest {
             .withHomePhoneNumber("5405465")
             .build();
 
+    private ContactInformation contactInformation2 = new ContactInformation.ContactInfoBuilder()
+            .withCellPhoneNumber("0458235")
+            .withEmailAddress("Jeroen2.smissaert@outlook.com")
+            .withHomePhoneNumber("5405465")
+            .build();
+
     private User testUser = new User.UserBuilder()
             .withAddress(address)
             .withContactInformation(contactInformation)
+            .withFirstName("Jeroen")
+            .withLastName("Smissaert")
+            .withLicensePlate("B2020")
+            .build();
+
+    private User testUser2 = new User.UserBuilder()
+            .withAddress(address)
+            .withContactInformation(contactInformation2)
             .withFirstName("Jeroen")
             .withLastName("Smissaert")
             .withLicensePlate("B2020")
@@ -49,15 +65,6 @@ class UserServiceTest {
         userService = new UserService(userRepository, userMapper);
     }
 
-//    @Test
-//    void addingUserToDatabaseWillReturnCorrectUser() {
-//        Mockito.when(userRepository.save(testUser)).thenReturn(testUser);
-//        Mockito.when(userMapper.toUser(createUserDto)).thenReturn(testUser);
-////        Mockito.when(userMapper.toUserDto(testUser)).thenReturn();
-//
-//        Assertions.assertThat(userService.addUser(createUserDto)).isEqualTo(testUser);
-//    }
-
     @Test
     void mockTest_WhenSavingUser_CheckIfSaveFunctionOfRepositoryIsCalled(){
         userService.addUser(createUserDto);
@@ -72,35 +79,17 @@ class UserServiceTest {
         Assertions.assertThat(receivedUserDto).isEqualTo(userMapper.toUserDto(userMapper.toUser(createUserDto)));
     }
 
-//    @Test
-//    void addingUserToDatabaseWillReturnCorrectUser() {
-//        Mockito.when(userRepository.save(testUser)).thenReturn(testUser);
-//        Assertions.assertThat(userService.addUser(createUserDto)).isEqualTo(userMapper.toUserDto(testUser));
-//    }
-//
-//    @Test
-//    void verifyUserRepositorySaveIsExecuted() {
-//        Mockito.when(userRepository.save(testUser)).thenReturn(testUser);
-//        userService.addUser(createUserDto);
-//        Mockito.verify(userRepository).save(testUser);
-//    }
-//    @Test
-//    void verifyUserRepositorySaveIsExecuted() {
-//        userService.addUser(testUser);
-//        Mockito.verify(userRepository).save(testUser);
-//    }
-//
-//    @Test
-//    void verifyUserRepositoryFindAllIsCalled(){
-//        userService.getAllMembersOverview();
-//        Mockito.verify(userRepository).findAll();
-//    }
-//
-//    @Test
-//    void whenGetAllMembersOverviewIsCalled_StringShouldContainSpecifiedUser(){
-//        Mockito.when(userRepository.findAll()).thenReturn();
-//        userService.addUser(createUserDto);
-//        Assertions.assertThat(userService.getAllMembersOverview()).contains(testUser.getFirstName());
-//
-//    }
+    @Test
+    void verifyUserRepositoryFindAllIsCalled(){
+        userService.getAllMembersOverview();
+        Mockito.verify(userRepository).findAll();
+    }
+
+    @Test
+    void whenGetAllMembersOverviewIsCalled_StringShouldContainSpecifiedUser(){
+        List<User> expectedUsers = List.of(testUser,testUser2);
+        Mockito.when(userRepository.findAll()).thenReturn(expectedUsers);
+        List<User> actualUsers = userService.getAllUser();
+        Assertions.assertThat(actualUsers).isEqualTo(expectedUsers);
+    }
 }

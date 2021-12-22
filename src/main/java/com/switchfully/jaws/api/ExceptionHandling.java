@@ -1,6 +1,7 @@
 package com.switchfully.jaws.api;
 
 import com.switchfully.jaws.Exceptions.EmailAddressIsInvalidException;
+import com.switchfully.jaws.Exceptions.ObjectAlreadyExist;
 import org.hibernate.PropertyValueException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -21,13 +22,13 @@ public class ExceptionHandling {
     }
 
     @ExceptionHandler(PropertyValueException.class)
-    protected void PropertyValueException(PropertyValueException exception,
+    protected void propertyValueException(PropertyValueException exception,
                                           HttpServletResponse response) throws IOException {
         response.sendError(BAD_REQUEST.value(), exception.getMessage());
     }
 
     @ExceptionHandler(NullPointerException.class)
-    protected void NullPointerException(NullPointerException exception,
+    protected void nullPointerException(NullPointerException exception,
                                         HttpServletResponse response) throws IOException {
         response.sendError(BAD_REQUEST.value(), exception.getMessage());
     }
@@ -36,6 +37,12 @@ public class ExceptionHandling {
     @ExceptionHandler(EmailAddressIsInvalidException.class)
     protected void emailAddressInvalidException(EmailAddressIsInvalidException exception,
                                                 HttpServletResponse response) throws IOException {
+        response.sendError(BAD_REQUEST.value(), exception.getMessage());
+    }
+
+    @ExceptionHandler(ObjectAlreadyExist.class)
+    protected void objectAlreadyExist(ObjectAlreadyExist exception,
+                                      HttpServletResponse response) throws IOException {
         response.sendError(BAD_REQUEST.value(), exception.getMessage());
     }
 }

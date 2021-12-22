@@ -46,5 +46,4 @@ public class UserMapper {
     public ContactInformationDto toContactInformationDto(ContactInformation contactInformation){
         return new ContactInformationDto(contactInformation.getCellphoneNumber(), contactInformation.getHomePhoneNumber(), contactInformation.getEmailAddress());
     }
-
 }

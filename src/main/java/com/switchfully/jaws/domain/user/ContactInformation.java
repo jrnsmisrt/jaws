@@ -6,6 +6,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.util.Objects;
 
 @Embeddable
 public final class ContactInformation {
@@ -32,6 +33,18 @@ public final class ContactInformation {
         return emailAddress;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ContactInformation that = (ContactInformation) o;
+        return Objects.equals(emailAddress, that.emailAddress);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(emailAddress);
+    }
 
     private ContactInformation(ContactInfoBuilder builder) {
         this.cellphoneNumber = builder.cellPhoneNumber;
