@@ -29,7 +29,7 @@ public class DivisionController {
         return divisionService.createDivision(createDivisionDTO);
     }
 
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<DivisionDto> getAllDivisions(){
         return divisionService.getAllDivisions();

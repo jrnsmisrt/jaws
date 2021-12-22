@@ -3,6 +3,7 @@ package com.switchfully.jaws.services.division;
 import com.switchfully.jaws.domain.Division;
 import com.switchfully.jaws.repositories.DivisionRepository;
 import com.switchfully.jaws.services.division.dtos.CreateDivisionDto;
+import com.switchfully.jaws.services.division.dtos.DivisionDto;
 import com.switchfully.jaws.services.division.dtos.DivisionMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +27,7 @@ class DivisionServiceTest {
 
     private DivisionRepository divisionRepository;
     private DivisionService divisionServiceMock;
+
     private DivisionMapper divisionMapperMock;
 
     @BeforeEach
@@ -51,7 +53,11 @@ class DivisionServiceTest {
 
     @Test
     void givenDivisionRepository_whenDivisionSavedToDb_willReturnDivision() {
-        Mockito.when(divisionRepository.save(division)).thenReturn(division);
+        //Mockito.when(divisionRepository.save(division)).thenReturn(division);
+        divisionRepository.save(division);
+        DivisionDto divisionDto = divisionServiceMock.createDivision(createDivisionDto);
+        Assertions.assertThat(divisionDto.name().equalsIgnoreCase(division.getName()));
+
     }
 
     @Test
