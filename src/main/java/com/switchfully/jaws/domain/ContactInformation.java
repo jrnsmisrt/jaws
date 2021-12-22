@@ -1,8 +1,11 @@
 package com.switchfully.jaws.domain;
 
+import com.switchfully.jaws.Exceptions.EmailAddressIsInvalidException;
+
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.Email;
 
 @Embeddable
 public final class ContactInformation {
@@ -13,7 +16,6 @@ public final class ContactInformation {
     private String homePhoneNumber;
 
     @Column(name = "email")
-    @Email
     private String emailAddress;
 
     protected ContactInformation() {}
@@ -29,6 +31,7 @@ public final class ContactInformation {
     public String getEmailAddress() {
         return emailAddress;
     }
+
 
     private ContactInformation(ContactInfoBuilder builder) {
         this.cellphoneNumber = builder.cellPhoneNumber;
@@ -55,12 +58,30 @@ public final class ContactInformation {
         }
 
         public ContactInfoBuilder withEmailAddress(String emailAddress) {
-            this.emailAddress = emailAddress;
+            setEmail(emailAddress);
             return this;
         }
 
         public ContactInformation build() {
             return new ContactInformation(this);
+        }
+
+        private void setEmail(String email) {
+            if (!isValidEmailAddress(email)) {
+                throw new EmailAddressIsInvalidException(email);
+            }
+            this.emailAddress = email;
+        }
+
+        private boolean isValidEmailAddress(String email) {
+            boolean result = true;
+            try {
+                InternetAddress emailAddress = new InternetAddress(email);
+                emailAddress.validate();
+            } catch (AddressException ex) {
+                result = false;
+            }
+            return result;
         }
     }
 }

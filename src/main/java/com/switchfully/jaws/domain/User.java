@@ -1,7 +1,5 @@
 package com.switchfully.jaws.domain;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -25,9 +23,8 @@ public class User {
     @Column(name = "registration_date")
     private LocalDate registrationDate;
 
-    @JsonManagedReference
-    @OneToOne( cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "fk_address_id",nullable = false)
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "fk_address_id", nullable = false)
     private Address address;
 
     @Embedded
