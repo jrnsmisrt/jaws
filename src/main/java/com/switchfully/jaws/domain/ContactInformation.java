@@ -84,4 +84,16 @@ public final class ContactInformation {
             return result;
         }
     }
+
+    public String getCellphoneNumber() {
+        return cellphoneNumber;
+    }
+
+    public String getHomePhoneNumber() {
+        return homePhoneNumber;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
 }
