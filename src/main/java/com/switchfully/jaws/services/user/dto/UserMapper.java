@@ -1,8 +1,8 @@
 package com.switchfully.jaws.services.user.dto;
 
-import com.switchfully.jaws.domain.Address;
-import com.switchfully.jaws.domain.ContactInformation;
-import com.switchfully.jaws.domain.User;
+import com.switchfully.jaws.domain.user.Address;
+import com.switchfully.jaws.domain.user.ContactInformation;
+import com.switchfully.jaws.domain.user.User;
 import org.springframework.stereotype.Component;
 
 @Component

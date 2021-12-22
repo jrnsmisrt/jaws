@@ -15,21 +15,27 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 public class ExceptionHandling {
 
     @ExceptionHandler(InvalidDataAccessApiUsageException.class)
-    protected void entityDoesNotExistInDb(Exception exception,
+    protected void entityDoesNotExistInDb(InvalidDataAccessApiUsageException exception,
                                           HttpServletResponse response) throws IOException {
         response.sendError(BAD_REQUEST.value(), exception.getMessage());
     }
 
     @ExceptionHandler(PropertyValueException.class)
-    protected void PropertyValueException(Exception exception,
+    protected void PropertyValueException(PropertyValueException exception,
                                           HttpServletResponse response) throws IOException {
+        response.sendError(BAD_REQUEST.value(), exception.getMessage());
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    protected void NullPointerException(NullPointerException exception,
+                                        HttpServletResponse response) throws IOException {
         response.sendError(BAD_REQUEST.value(), exception.getMessage());
     }
 
 
     @ExceptionHandler(EmailAddressIsInvalidException.class)
-    protected void emailAddressInvalidException(EmailAddressIsInvalidException emailException,
+    protected void emailAddressInvalidException(EmailAddressIsInvalidException exception,
                                                 HttpServletResponse response) throws IOException {
-        response.sendError(BAD_REQUEST.value(), emailException.getMessage());
+        response.sendError(BAD_REQUEST.value(), exception.getMessage());
     }
 }

@@ -1,4 +1,4 @@
-package com.switchfully.jaws.domain;
+package com.switchfully.jaws.domain.user;
 
 import com.switchfully.jaws.Exceptions.EmailAddressIsInvalidException;
 

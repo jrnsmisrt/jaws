@@ -1,19 +1,18 @@
 package com.switchfully.jaws.services.user;
 
-import com.switchfully.jaws.domain.Address;
-import com.switchfully.jaws.domain.ContactInformation;
-import com.switchfully.jaws.domain.User;
+import com.switchfully.jaws.domain.user.Address;
+import com.switchfully.jaws.domain.user.ContactInformation;
+import com.switchfully.jaws.domain.user.User;
 import com.switchfully.jaws.repositories.UserRepository;
-import com.switchfully.jaws.services.division.dtos.DivisionMapper;
-import com.switchfully.jaws.services.user.dto.*;
-import org.assertj.core.api.Assertions;
+import com.switchfully.jaws.services.user.dto.ContactInformationDto;
+import com.switchfully.jaws.services.user.dto.CreateAddressDto;
+import com.switchfully.jaws.services.user.dto.CreateUserDto;
+import com.switchfully.jaws.services.user.dto.UserMapper;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.mockito.Mockito.mock;
 @DataJpaTest
 @ActiveProfiles("test")
 class UserServiceTest {
@@ -47,7 +46,7 @@ class UserServiceTest {
 
     private final CreateAddressDto createAddressDto = new CreateAddressDto(address.getStreet(), address.getStreetNumber(), address.getCity(), address.getCountry(), address.getZipCode());
     private final ContactInformationDto contactInformationDto = new ContactInformationDto(contactInformation.getCellphoneNumber(), contactInformation.getHomePhoneNumber(), contactInformation.getEmailAddress());
-    private final CreateUserDto createUserDto = new CreateUserDto(testUser.getFirstName(), testUser.getLastName(), testUser.getLicensePlate(), createAddressDto,contactInformationDto);
+    private final CreateUserDto createUserDto = new CreateUserDto(testUser.getFirstName(), testUser.getLastName(), testUser.getLicensePlate(), createAddressDto, contactInformationDto);
 
 
     @BeforeEach

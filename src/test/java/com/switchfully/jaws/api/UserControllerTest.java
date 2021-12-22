@@ -93,5 +93,54 @@ class UserControllerTest {
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value());
     }
-    // Add user test for email on User class
+
+
+    @Test
+    void givenAddressNull_RegisterMemberWorks_GivesException() {
+        ContactInformation contactInformation = new ContactInformation.ContactInfoBuilder()
+                .withCellPhoneNumber("0458235")
+                .withEmailAddress("Jeroen.smissaert@outlook.com")
+                .withHomePhoneNumber("5405465")
+                .build();
+
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", null, userMapper.toContactInformationDto(contactInformation));
+
+
+        RestAssured
+                .given()
+                .body(createUserDto)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .when()
+                .port(port)
+                .post("/users")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void givenBadEmailAddress_RegisterMemberWorks_GivesException() {
+        CreateAddressDto createAddressDto = new CreateAddressDto("husestraat", null, "Gent", "Belgium", 9000);
+        ContactInformation contactInformation = new ContactInformation.ContactInfoBuilder()
+                .withCellPhoneNumber("0458235")
+                .withEmailAddress("Jeroen.smissaertoutlook.com")
+                .withHomePhoneNumber("5405465")
+                .build();
+
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, userMapper.toContactInformationDto(contactInformation));
+
+
+        RestAssured
+                .given()
+                .body(createUserDto)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .when()
+                .port(port)
+                .post("/users")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
 }
