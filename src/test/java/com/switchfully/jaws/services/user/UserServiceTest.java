@@ -4,6 +4,7 @@ import com.switchfully.jaws.domain.Address;
 import com.switchfully.jaws.domain.ContactInformation;
 import com.switchfully.jaws.domain.User;
 import com.switchfully.jaws.repositories.UserRepository;
+import com.switchfully.jaws.services.user.dto.UserMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ class UserServiceTest {
 
     private UserRepository userRepository;
     private UserService userService;
+    private UserMapper userMapper;
 
     private final Address address = new Address.AddressBuilder()
             .withCity("Gent")
@@ -40,7 +42,7 @@ class UserServiceTest {
     @BeforeEach
     void setUpStockService() {
         userRepository = Mockito.mock(UserRepository.class);
-        userService = new UserService(userRepository);
+        userService = new UserService(userRepository, userMapper);
 
     }
 
@@ -54,5 +56,18 @@ class UserServiceTest {
     void verifyUserRepositorySaveIsExecuted() {
         userService.addUser(testUser);
         Mockito.verify(userRepository).save(testUser);
+    }
+
+    @Test
+    void verifyUserRepositoryFindAllIsCalled(){
+        userService.getAllMembersOverview();
+        Mockito.verify(userRepository).findAll();
+    }
+
+    @Test
+    void whenGetAllMembersOverviewIsCalled_StringShouldContainSpecifiedUser(){
+        userService.addUser(testUser);
+        Assertions.assertThat(userService.getAllMembersOverview()).contains(testUser.getFirstName());
+
     }
 }
