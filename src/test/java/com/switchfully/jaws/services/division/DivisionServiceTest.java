@@ -10,15 +10,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
-@SpringBootTest
+
+//@SpringBootTest
+//@AutoConfigureTestDatabase
+@DataJpaTest
 class DivisionServiceTest {
 
     private Division division;
@@ -27,14 +27,27 @@ class DivisionServiceTest {
 
     private DivisionRepository divisionRepository;
     private DivisionService divisionServiceMock;
-
     private DivisionMapper divisionMapperMock;
+
+
+    private DivisionService divisionService;
+    private DivisionMapper divisionMapper;
+
+    @Autowired
+    private DivisionRepository repository;
+
+
 
     @BeforeEach
     void setUp() {
         divisionRepository = mock(DivisionRepository.class);
         divisionMapperMock = mock(DivisionMapper.class);
         divisionServiceMock = new DivisionService(divisionMapperMock, divisionRepository);
+
+        divisionMapper = new DivisionMapper();
+
+        divisionService = new DivisionService(divisionMapper, repository);
+
 
         division = new Division.DivisionBuilder()
                 .withName("Monkey")
@@ -53,12 +66,16 @@ class DivisionServiceTest {
 
     @Test
     void givenDivisionRepository_whenDivisionSavedToDb_willReturnDivision() {
-        //Mockito.when(divisionRepository.save(division)).thenReturn(division);
-        divisionRepository.save(division);
-        DivisionDto divisionDto = divisionServiceMock.createDivision(createDivisionDto);
-        Assertions.assertThat(divisionDto.name().equalsIgnoreCase(division.getName()));
+        CreateDivisionDto createDivisionDto2 = new CreateDivisionDto("Div", "Bossman", "Number One");
+
+        DivisionDto expected = divisionService.createDivision(createDivisionDto2);
+
+        Division actual = repository.getById(expected.id());
+
+        Assertions.assertThat(actual.getName()).isEqualTo(expected.name());
 
     }
+
 
     @Test
     void givenDivisionService_whenDivisionSavedToDb_thenVerifyRepositorySavesEntity() {
@@ -68,7 +85,7 @@ class DivisionServiceTest {
 
     @Test
     void givenDivisionRepository_whenDivisionsRetrievedFromDb_thenReturnAllDivisions(){
-        Mockito.when(divisionRepository.findAll()).thenReturn(List.of());
+        Assertions.assertThat(divisionService.getAllDivisions() != null);
     }
 
     @Test
