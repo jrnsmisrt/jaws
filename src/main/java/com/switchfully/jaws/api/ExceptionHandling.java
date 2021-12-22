@@ -12,7 +12,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @ControllerAdvice
 public class ExceptionHandling {
 
-    @ExceptionHandler(InvalidDataAccessApiUsageException.class)
+    @ExceptionHandler({InvalidDataAccessApiUsageException.class, IllegalArgumentException.class })
     protected void entityDoesNotExistInDb(Exception exception,
                                           HttpServletResponse response) throws IOException {
         response.sendError(BAD_REQUEST.value(), exception.getMessage());
