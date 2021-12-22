@@ -11,6 +11,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
@@ -21,10 +22,15 @@ import java.time.LocalDate;
 @ActiveProfiles("test")
 class UserControllerTest {
 
-    @Autowired
-    private UserController userController;
-
     private final UserMapper userMapper = new UserMapper();
+
+    @Value("${server.port}")
+    private int port;
+
+    @BeforeEach
+    void setUp() {
+
+    }
     @Value("${server.port}")
     private int port;
 
