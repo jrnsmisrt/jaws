@@ -11,6 +11,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
@@ -20,7 +22,8 @@ import java.time.LocalDate;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @ActiveProfiles("test")
 class UserControllerTest {
-
+    @Autowired
+    private UserController userController;
     private final UserMapper userMapper = new UserMapper();
 
     @Value("${server.port}")
@@ -30,6 +33,7 @@ class UserControllerTest {
     void setUp() {
 
     }
+
 
     @Test
     void givenCorrectInformation_RegisterMemberWorks() {
@@ -142,5 +146,36 @@ class UserControllerTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+    // Add user test for email on User class
+
+
+    @Test
+    void givenUserDto_WhenGetAllMembersOverviewIsCalled_OverviewContainsSaidUserDto(){
+        CreateAddressDto createAddressDto = new CreateAddressDto("husestraat", "22", "Gent", "Belgium", 9000);
+        ContactInformation contactInformation = new ContactInformation.ContactInfoBuilder()
+                .withCellPhoneNumber("0458235")
+                .withEmailAddress("Jeroen.smissaert@outlook.com")
+                .withHomePhoneNumber("5405465")
+                .build();
+
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, userMapper.toContactInformationDto(contactInformation));
+
+
+        UserDto userDto = RestAssured
+                .given()
+                .body(createUserDto)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .when()
+                .port(port)
+                .post("/users")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .as(UserDto.class);
+
+        Assertions.assertThat(userController.getAllMembers()).contains("Jeroen");
     }
 }
