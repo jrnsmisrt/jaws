@@ -37,10 +37,6 @@ public class ContactPerson {
     protected ContactPerson() {
     }
 
-    public long getId_contact_person() {
-        return id_contact_person;
-    }
-
     public Name getName() {
         return name;
     }
