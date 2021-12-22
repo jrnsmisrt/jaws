@@ -8,8 +8,8 @@ import com.switchfully.jaws.services.user.dto.UserMapper;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -25,11 +25,8 @@ class UserControllerTest {
     private UserController userController;
 
     private final UserMapper userMapper = new UserMapper();
-
-    @BeforeEach
-    void setUp() {
-
-    }
+    @Value("${server.port}")
+    private int port;
 
     @Test
     void givenCorrectInformation_RegisterMemberWorks() {
@@ -49,7 +46,7 @@ class UserControllerTest {
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON)
                 .when()
-                .port(8080)
+                .port(port)
                 .post("/users")
                 .then()
                 .assertThat()
@@ -87,7 +84,7 @@ class UserControllerTest {
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON)
                 .when()
-                .port(8080)
+                .port(port)
                 .post("/users")
                 .then()
                 .assertThat()
