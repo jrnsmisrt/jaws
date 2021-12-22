@@ -10,6 +10,7 @@ import io.restassured.http.ContentType;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
@@ -21,6 +22,9 @@ import java.time.LocalDate;
 class UserControllerTest {
 
     private final UserMapper userMapper = new UserMapper();
+
+    @Value("${server.port}")
+    private int port;
 
     @BeforeEach
     void setUp() {
@@ -45,7 +49,7 @@ class UserControllerTest {
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON)
                 .when()
-                .port(8080)
+                .port(port)
                 .post("/users")
                 .then()
                 .assertThat()
@@ -83,7 +87,7 @@ class UserControllerTest {
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON)
                 .when()
-                .port(8080)
+                .port(port)
                 .post("/users")
                 .then()
                 .assertThat()
