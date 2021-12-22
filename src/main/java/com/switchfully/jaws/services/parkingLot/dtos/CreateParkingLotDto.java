@@ -1,4 +1,9 @@
 package com.switchfully.jaws.services.parkingLot.dtos;
 
-public class CreateParkingLotDto {
+public record CreateParkingLotDto(String name,
+                                  String category,
+                                  int maxCapacity,
+                                  ContactPersonDto contactPerson,
+                                  double pricePerHour,
+                                  AddressDto address) {
 }

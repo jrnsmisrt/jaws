@@ -20,4 +20,12 @@ public final class Name {
     public Name() {
         this("", "");
     }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
 }

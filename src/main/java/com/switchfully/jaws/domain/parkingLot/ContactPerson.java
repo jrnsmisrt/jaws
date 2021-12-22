@@ -21,20 +21,35 @@ public class ContactPerson {
     @Embedded
     private ContactInformation contactInformation;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "fk_id_address")
     private Address address;
 
-    public ContactPerson(long id_contact_person, Name name, ContactInformation contactInformation, Address address) {
+    public ContactPerson(Name name, ContactInformation contactInformation, Address address) {
         if (contactInformation.getCellphoneNumber() == null && contactInformation.getHomePhoneNumber() == null) {
             throw new IllegalArgumentException("A contact person must have at least one phone number.");
         }
-        this.id_contact_person = id_contact_person;
         this.name = name;
         this.contactInformation = contactInformation;
         this.address = address;
     }
 
-    public ContactPerson() {
+    protected ContactPerson() {
+    }
+
+    public long getId_contact_person() {
+        return id_contact_person;
+    }
+
+    public Name getName() {
+        return name;
+    }
+
+    public ContactInformation getContactInformation() {
+        return contactInformation;
+    }
+
+    public Address getAddress() {
+        return address;
     }
 }
