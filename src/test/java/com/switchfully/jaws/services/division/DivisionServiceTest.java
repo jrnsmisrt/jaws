@@ -11,6 +11,8 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -56,5 +58,16 @@ class DivisionServiceTest {
     void givenDivisionService_whenDivisionSavedToDb_thenVerifyRepositorySavesEntity() {
         divisionServiceMock.createDivision(createDivisionDto);
         Mockito.verify(divisionRepository).save(divisionMapperMock.mapDivisionDtoToDivision(createDivisionDto));
+    }
+
+    @Test
+    void givenDivisionRepository_whenDivisionsRetrievedFromDb_thenReturnAllDivisions(){
+        Mockito.when(divisionRepository.findAll()).thenReturn(List.of());
+    }
+
+    @Test
+    void givenDivisionService_whenDivisionsRetrievedFromDb_thenVerifyRepositoryReturnsEntities(){
+        divisionServiceMock.getAllDivisions();
+        Mockito.verify(divisionRepository).findAll();
     }
 }
