@@ -1,13 +1,6 @@
 package com.switchfully.jaws.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
@@ -16,40 +9,56 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_address")
-//    @NotBlank
-//    @NotNull
     private Long id;
 
-    @Column(name = "street", nullable = false)
-//    @NotBlank
-//    @NotNull
+    @Column(name = "street" ,nullable = false)
     private String street;
 
-    @Column(name = "street_number", nullable = false)
-//    @NotBlank
-//    @NotNull
+    @Column(name = "street_number" ,nullable = false)
     private String streetNumber;
 
     @Column(name = "city", nullable = false)
-    //@NotBlank
-    //@NotNull
     private String city;
 
     @Column(name = "country", nullable = false)
-//    @NotBlank
-//    @NotNull
     private String country;
 
     @Column(name = "zip_code", nullable = false)
-//    @NotBlank
-//    @NotNull
     private int zipCode;
 
     protected Address() {
     }
 
-    private Address(AddressBuilder builder) {
+    public Long getId() {
+        return id;
+    }
 
+    public String getStreet() {
+        return street;
+    }
+
+    public String getStreetNumber() {
+        return streetNumber;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public int getZipCode() {
+        return zipCode;
+    }
+
+    private Address(AddressBuilder builder) {
+        this.city = builder.city;
+        this.street = builder.street;
+        this.zipCode = builder.zipCode;
+        this.country = builder.country;
+        this.streetNumber = builder.streetNumber;
     }
 
     public static class AddressBuilder {

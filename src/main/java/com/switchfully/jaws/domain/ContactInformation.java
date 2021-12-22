@@ -3,26 +3,32 @@ package com.switchfully.jaws.domain;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Embeddable
 public final class ContactInformation {
     @Column(name = "cellphone_number")
-//    @NotBlank
-//    @NotNull
     private String cellphoneNumber;
 
     @Column(name = "home_number")
     private String homePhoneNumber;
 
     @Column(name = "email")
-//    @NotBlank
-//    @NotNull
     @Email
     private String emailAddress;
 
     protected ContactInformation() {}
+
+    public String getCellphoneNumber() {
+        return cellphoneNumber;
+    }
+
+    public String getHomePhoneNumber() {
+        return homePhoneNumber;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
 
     private ContactInformation(ContactInfoBuilder builder) {
         this.cellphoneNumber = builder.cellPhoneNumber;

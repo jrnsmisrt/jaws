@@ -48,8 +48,6 @@ class UserServiceTest {
     void addingUserToDatabaseWillReturnCorrectUser() {
         Mockito.when(userRepository.save(testUser)).thenReturn(testUser);
         Assertions.assertThat(userService.addUser(testUser)).isEqualTo(testUser);
-
-
     }
 
     @Test
@@ -57,6 +55,4 @@ class UserServiceTest {
         userService.addUser(testUser);
         Mockito.verify(userRepository).save(testUser);
     }
-
-
 }
