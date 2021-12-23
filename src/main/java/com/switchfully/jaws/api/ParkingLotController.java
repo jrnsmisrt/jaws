@@ -6,6 +6,7 @@ import com.switchfully.jaws.services.parkingLot.dtos.CreateParkingLotDto;
 import com.switchfully.jaws.services.parkingLot.dtos.ParkingLotDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,12 +27,14 @@ public class ParkingLotController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('CREATE_PARKING_LOT')")
     public ParkingLotDto createParkingLot(@RequestBody CreateParkingLotDto createParkingLotDto) {
         return parkingLotService.createParkingLot(createParkingLotDto);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('GET_PARKING_LOT_OVERVIEW')")
     public List<ParkingLotDto> getAllParkingLots(){
         return parkingLotService.getAllParkingLots();
     }

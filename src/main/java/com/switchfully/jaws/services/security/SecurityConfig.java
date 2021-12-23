@@ -70,7 +70,7 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
      */
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/test");
+        web.ignoring().antMatchers("/users");
     }
 
 
