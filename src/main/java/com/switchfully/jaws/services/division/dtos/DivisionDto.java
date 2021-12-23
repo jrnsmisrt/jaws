@@ -3,7 +3,6 @@ package com.switchfully.jaws.services.division.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.List;
 import java.util.Optional;
 
 public class DivisionDto{
@@ -12,21 +11,21 @@ public class DivisionDto{
     private final String originalName;
     @JsonProperty("director_fullname")
     private final String directorFullName;
-    @JsonProperty("all_subdivisions")
-    private final Optional<List<DivisionDto>> createDivisionDtoList;
+    @JsonProperty("parent_division_id")
+    private Optional<Long> parentDivisionId;
 
     private DivisionDto (DivisionDtoBuilder builder) {
         this.name = builder.name;
         this.originalName = builder.originalName;
         this.directorFullName = builder.directorFullName;
-        this.createDivisionDtoList = Optional.ofNullable(builder.divisionDtoList);
+        this.parentDivisionId = builder.parentDivisionId;
     }
 
     public static class DivisionDtoBuilder {
         private String name;
         private String originalName;
         private String directorFullName;
-        private List<DivisionDto> divisionDtoList;
+        private Optional<Long> parentDivisionId;
 
         public DivisionDtoBuilder() {
         }
@@ -46,8 +45,8 @@ public class DivisionDto{
             return this;
         }
 
-        public DivisionDtoBuilder withDivisionDtoList(List<DivisionDto> divisionDtoList) {
-            this.divisionDtoList = divisionDtoList;
+        public DivisionDtoBuilder withParentDivisionId(Optional<Long> parentDivisionId) {
+            this.parentDivisionId = parentDivisionId;
             return this;
         }
 
@@ -58,17 +57,5 @@ public class DivisionDto{
 
     public String getName() {
         return name;
-    }
-
-    public String getOriginalName() {
-        return originalName;
-    }
-
-    public String getDirectorFullName() {
-        return directorFullName;
-    }
-
-    public Optional<List<DivisionDto>> getCreateDivisionDtoList() {
-        return createDivisionDtoList;
     }
 }

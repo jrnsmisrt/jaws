@@ -1,6 +1,7 @@
 package com.switchfully.jaws.services.division;
 
 import com.switchfully.jaws.domain.Division;
+import com.switchfully.jaws.exceptions.ParentDivisionNotFoundException;
 import com.switchfully.jaws.repositories.DivisionRepository;
 import com.switchfully.jaws.services.division.dtos.CreateDivisionDto;
 import com.switchfully.jaws.services.division.dtos.DivisionDto;
@@ -12,6 +13,7 @@ import javax.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,27 +31,22 @@ public class DivisionService {
 
     public DivisionDto createDivision(CreateDivisionDto createDivisionDTO) {
         if (nameDoesNotExists(createDivisionDTO)) {
-            return getDivisionDto(createDivisionDTO);
-        } else if (isParentDivision(createDivisionDTO)) {
-            divisionRepository.findAll().stream()
-                    .filter(division -> division.getName().equalsIgnoreCase(createDivisionDTO.getName()))
-                    .map(Division::getId)
-                    .findAny()
-                    .ifPresent( id -> divisionRepository.deleteById(id));
-            return getDivisionDto(createDivisionDTO);
+            return addDivisionToDbAndReturnDivisionDto(createDivisionDTO);
         }
         throw new IllegalArgumentException("Could not add division");
     }
 
-    private DivisionDto getDivisionDto(CreateDivisionDto createDivisionDTO) {
+    private DivisionDto addDivisionToDbAndReturnDivisionDto(CreateDivisionDto createDivisionDTO) {
         Division division = divisionMapper.mapDivisionDtoToDivision(createDivisionDTO);
+        if (createDivisionDTO.getParentDivisionId() != null) {
+            Optional<Division> parentDivision = divisionRepository.findById(createDivisionDTO.getParentDivisionId());
+            parentDivision.ifPresentOrElse(parentDiv -> parentDiv.addSubdivision(division),
+                    () -> {
+                        throw new ParentDivisionNotFoundException();
+                    });
+        }
         divisionRepository.save(division);
         return divisionMapper.mapDivisionToDivisionDto(division);
-    }
-
-    private boolean isParentDivision(CreateDivisionDto createDivisionDTO) {
-        Optional<Division> optDivision = divisionRepository.findDivisionByName(createDivisionDTO.getName());
-        return optDivision.filter(division -> division.getSubDivisions() != null).isPresent();
     }
 
     public List<DivisionDto> getAllDivisions() {
