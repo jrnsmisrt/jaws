@@ -1,29 +1,33 @@
 package com.switchfully.jaws.domain.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import java.util.stream.Stream;
 
 public enum MemberShipLevel {
-    BRONZE(0, 0, 4),
-    SILVER(10, 0.20, 6 ),
-    GOLD(40, 0.30, 24);
+    BRONZE("bronze",0, 0, 4),
+    SILVER("silver",10, 0.20, 6),
+    GOLD("gold",40, 0.30, 24);
 
-    @Enumerated(EnumType.STRING)
     private double MonthlyCostEuro;
     private double parkingSpotAllocationPricePerHourReduction;
     private int MaximumAllowedAllocationTimeHours;
+    private String memberShipLevelName;
 
     MemberShipLevel() {
 
     }
 
-    MemberShipLevel(double monthlyCostEuro, double parkingSpotAllocationPricePerHourReduction, int maximumAllowedAllocationTimeHours) {
+    MemberShipLevel(String memberShipLevelName, double monthlyCostEuro, double parkingSpotAllocationPricePerHourReduction, int maximumAllowedAllocationTimeHours) {
         MonthlyCostEuro = monthlyCostEuro;
+        this.memberShipLevelName=memberShipLevelName;
         this.parkingSpotAllocationPricePerHourReduction = parkingSpotAllocationPricePerHourReduction;
         MaximumAllowedAllocationTimeHours = maximumAllowedAllocationTimeHours;
+    }
+
+    public String getMemberShipLevelName() {
+        return memberShipLevelName;
+    }
+
+    public static Stream<MemberShipLevel> getStreamOfLevels(){
+        return Stream.of(MemberShipLevel.values());
     }
 }

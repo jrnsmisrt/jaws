@@ -2,6 +2,7 @@ package com.switchfully.jaws.services.user;
 
 import com.switchfully.jaws.domain.user.Address;
 import com.switchfully.jaws.domain.user.ContactInformation;
+import com.switchfully.jaws.domain.user.MemberShipLevel;
 import com.switchfully.jaws.domain.user.User;
 import com.switchfully.jaws.repositories.UserRepository;
 import com.switchfully.jaws.services.user.dto.*;
@@ -55,7 +56,7 @@ class UserServiceTest {
 
     private final CreateAddressDto createAddressDto = new CreateAddressDto(address.getStreet(), address.getStreetNumber(), address.getCity(), address.getCountry(), address.getZipCode());
     private final ContactInformationDto contactInformationDto = new ContactInformationDto(contactInformation.getCellphoneNumber(), contactInformation.getHomePhoneNumber(), contactInformation.getEmailAddress());
-    private final CreateUserDto createUserDto = new CreateUserDto(testUser.getFirstName(), testUser.getLastName(), testUser.getLicensePlate(), createAddressDto, contactInformationDto);
+    private final CreateUserDto createUserDto = new CreateUserDto(testUser.getFirstName(), testUser.getLastName(), testUser.getLicensePlate(), createAddressDto, contactInformationDto, null);
 
 
     @BeforeEach
@@ -91,5 +92,12 @@ class UserServiceTest {
         Mockito.when(userRepository.findAll()).thenReturn(expectedUsers);
         List<User> actualUsers = userService.getAllUser();
         Assertions.assertThat(actualUsers).isEqualTo(expectedUsers);
+    }
+
+    @Test
+    void whenSettingMemberShipLevel_AssertThatMemberHasSaidMemberShipLevel(){
+        testUser2.setMemberShipLevel(MemberShipLevel.GOLD);
+
+        Assertions.assertThat(testUser2.getMemberShipLevel()).isEqualTo(MemberShipLevel.GOLD);
     }
 }

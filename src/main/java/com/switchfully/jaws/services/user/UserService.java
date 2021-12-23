@@ -45,7 +45,6 @@ public class UserService {
     }
 
     public String getAllMembersOverview() {
-        //check if user role = manager
         StringBuilder membersoverview = new StringBuilder();
         String overview = "Overview of all members: \n";
 
@@ -62,19 +61,6 @@ public class UserService {
         return overview + membersoverview;
     }
 
-//    public String selectMemberShipLevel(Long userId, MemberShipLevel memberShipLevel) {
-//        Optional<User> optionalUserWithSpecifiedId = getAllUser().stream()
-//                .filter(user -> user.getId().equals(userId))
-//                .findFirst();
-//
-//        if(optionalUserWithSpecifiedId.isPresent()){
-//            User userWithSpecifiedId = optionalUserWithSpecifiedId.get();
-//            userWithSpecifiedId.setMemberShipLevel(memberShipLevel);
-//            return "Membership level for user with [ "+userWithSpecifiedId.getId()+" ] ID, has been changed to "+memberShipLevel;
-//        }
-//        else return "Specified user ID has not been found, please try again.";
-//
-//    }
 
     private void checkIfValidEmail(String email) {
         if (!isValidEmailAddress(email)) {

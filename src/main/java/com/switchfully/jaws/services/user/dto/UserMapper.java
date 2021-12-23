@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserMapper {
     public UserDto toUserDto(User user) {
-        return new UserDto(user.getId(),user.getFirstName(),user.getLastName(),user.getLicensePlate(), toAddressDto(user.getAddress()), toContactInformationDto(user.getContactInformation()), user.getRegistrationDate());
+        return new UserDto(user.getId(),user.getFirstName(),user.getLastName(),user.getLicensePlate(), toAddressDto(user.getAddress()), toContactInformationDto(user.getContactInformation()), user.getRegistrationDate(), user.getMemberShipLevelName());
     }
 
     public User toUser(CreateUserDto createUserDto) {
@@ -18,6 +18,7 @@ public class UserMapper {
                 .withFirstName(createUserDto.firstName())
                 .withLastName(createUserDto.lastName())
                 .withLicensePlate(createUserDto.licensePlate())
+                .withMemberShipLevelName(createUserDto.memberShipLevel())
                 .build();
     }
 
