@@ -92,7 +92,7 @@ class UserControllerTest {
         CreateAddressDto createAddressDto = new CreateAddressDto("husestraat", "22", "Gent", "Belgium", 9000);
         ContactInformation contactInformation = new ContactInformation.ContactInfoBuilder()
                 .withCellPhoneNumber("0458235")
-                .withEmailAddress("Jeroen.smissaertcorrectInfo@outlook.com")
+                .withEmailAddress("smis@outlook.com")
                 .withHomePhoneNumber("5405465")
                 .build();
 
@@ -123,7 +123,7 @@ class UserControllerTest {
         CreateAddressDto createAddressDto = new CreateAddressDto("husestraat", "22", "Gent", "Belgium", 9000);
         ContactInformation contactInformation = new ContactInformation.ContactInfoBuilder()
                 .withCellPhoneNumber("0458235")
-                .withEmailAddress("Jeroen.smissaertcorrectInfo@outlook.com")
+                .withEmailAddress("Jrs@outlook.com")
                 .withHomePhoneNumber("5405465")
                 .build();
 
