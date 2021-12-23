@@ -1,6 +1,7 @@
 package com.switchfully.jaws.api;
 
 import com.switchfully.jaws.Exceptions.EmailAddressIsInvalidException;
+import com.switchfully.jaws.Exceptions.InvalidMemberShipLevelInputException;
 import com.switchfully.jaws.Exceptions.ObjectAlreadyExist;
 import org.hibernate.PropertyValueException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
@@ -42,6 +43,12 @@ public class ExceptionHandling {
 
     @ExceptionHandler(ObjectAlreadyExist.class)
     protected void objectAlreadyExist(ObjectAlreadyExist exception,
+                                      HttpServletResponse response) throws IOException {
+        response.sendError(BAD_REQUEST.value(), exception.getMessage());
+    }
+
+    @ExceptionHandler(InvalidMemberShipLevelInputException.class)
+    protected void invalidMemberShipLevelInputException(InvalidMemberShipLevelInputException exception,
                                       HttpServletResponse response) throws IOException {
         response.sendError(BAD_REQUEST.value(), exception.getMessage());
     }

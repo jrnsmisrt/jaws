@@ -20,7 +20,7 @@ public class UserMapper {
     }
 
     public UserDto toUserDto(User user) {
-        return new UserDto(user.getId(),user.getFirstName(),user.getLastName(),user.getLicensePlate(), addressMapper.mapEntityToDto(user.getAddress()), contactInformationMapper.mapEntityToDto(user.getContactInformation()), user.getRegistrationDate());
+        return new UserDto(user.getId(),user.getFirstName(),user.getLastName(),user.getLicensePlate(), addressMapper.mapEntityToDto(user.getAddress()), contactInformationMapper.mapEntityToDto(user.getContactInformation()), user.getRegistrationDate(),user.getMemberShipLevelName());
     }
 
     public User toUser(CreateUserDto createUserDto) {
