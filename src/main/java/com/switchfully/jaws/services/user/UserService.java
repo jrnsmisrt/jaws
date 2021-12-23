@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -24,9 +26,11 @@ public class UserService {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
     }
+
     public List<User> getAllUser() {
         return userRepository.findAll();
     }
+
     public UserDto addUser(CreateUserDto createUserDto) {
         checkIfValidEmail(createUserDto.contactInformationDto().emailAddress());
         User user = userMapper.toUser(createUserDto);
@@ -57,6 +61,20 @@ public class UserService {
         }
         return overview + membersoverview;
     }
+
+//    public String selectMemberShipLevel(Long userId, MemberShipLevel memberShipLevel) {
+//        Optional<User> optionalUserWithSpecifiedId = getAllUser().stream()
+//                .filter(user -> user.getId().equals(userId))
+//                .findFirst();
+//
+//        if(optionalUserWithSpecifiedId.isPresent()){
+//            User userWithSpecifiedId = optionalUserWithSpecifiedId.get();
+//            userWithSpecifiedId.setMemberShipLevel(memberShipLevel);
+//            return "Membership level for user with [ "+userWithSpecifiedId.getId()+" ] ID, has been changed to "+memberShipLevel;
+//        }
+//        else return "Specified user ID has not been found, please try again.";
+//
+//    }
 
     private void checkIfValidEmail(String email) {
         if (!isValidEmailAddress(email)) {

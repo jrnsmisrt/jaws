@@ -31,6 +31,9 @@ public class User {
     @Embedded
     private ContactInformation contactInformation;
 
+    @Embedded
+    private MemberShipLevel memberShipLevel;
+
     protected User() {
     }
 
@@ -55,6 +58,14 @@ public class User {
         this.licensePlate = builder.licensePlate;
         this.registrationDate = LocalDate.now();
 
+    }
+
+    public MemberShipLevel getMemberShipLevel() {
+        return memberShipLevel;
+    }
+
+    public void setMemberShipLevel(MemberShipLevel memberShipLevel) {
+        this.memberShipLevel = memberShipLevel;
     }
 
     public Long getId() {
