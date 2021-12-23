@@ -14,7 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class ParkingLotControllerTest {
+class ParkingLotControllerIntegrationTest {
 
     @Autowired
     private ParkingLotController parkingLotController;
@@ -26,12 +26,33 @@ class ParkingLotControllerTest {
         Assertions.assertThat(actual).isEqualTo(expected);
     }
 
+    @Test
+    void createParkingLot_givenIncorrectDtoWithNullPhoneNumbers_thenThrowsIllegalArgumentException() {
+        Assertions.assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> parkingLotController.createParkingLot(createCreateParkingLotDtoWithInvalidPhoneNumbers()));
+    }
+
     private CreateParkingLotDto createValidCreateParkingLotDto() {
-        ContactInformationDto contactInformationDto = new ContactInformationDto("0123456789", "987654321", "test@test.com");
+        ContactInformationDto contactInformationDto = createValidContactInformationDto();
         CreateAddressDto createAddressDto = new CreateAddressDto("contact person street", "contact person street number", "contact person city", "contact person country", 6666);
         CreateContactPersonDto createContactPersonDto = new CreateContactPersonDto("Lastname", "Firstname", contactInformationDto, createAddressDto);
         CreateAddressDto parkingAddressDto = new CreateAddressDto("parking street", "parking street number", "parking city", "parking country", 7777);
         return new CreateParkingLotDto("Parking lot name", Category.UNDERGROUND_BUILDING.name(), 260, 2.99, createContactPersonDto, parkingAddressDto);
+    }
+
+    private CreateParkingLotDto createCreateParkingLotDtoWithInvalidPhoneNumbers() {
+        ContactInformationDto contactInformationDto = createInvalidContactInformationDto();
+        CreateAddressDto createAddressDto = new CreateAddressDto("contact person street", "contact person street number", "contact person city", "contact person country", 6666);
+        CreateContactPersonDto createContactPersonDto = new CreateContactPersonDto("Lastname", "Firstname", contactInformationDto, createAddressDto);
+        CreateAddressDto parkingAddressDto = new CreateAddressDto("parking street", "parking street number", "parking city", "parking country", 7777);
+        return new CreateParkingLotDto("Parking lot name", Category.UNDERGROUND_BUILDING.name(), 260, 2.99, createContactPersonDto, parkingAddressDto);
+    }
+
+    private ContactInformationDto createValidContactInformationDto() {
+        return new ContactInformationDto("0123456789", "987654321", "test@test.com");
+    }
+
+    private ContactInformationDto createInvalidContactInformationDto() {
+        return new ContactInformationDto(null, null, "test@test.com");
     }
 
 }
