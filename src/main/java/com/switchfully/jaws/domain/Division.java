@@ -124,8 +124,4 @@ public class Division {
         subDivisions.add(division);
     }
 
-
-    public void addSubDivision(Division subDivision){
-        this.parentDivisionId.add(subDivision);
-    }
 }
