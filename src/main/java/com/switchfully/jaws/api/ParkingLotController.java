@@ -1,11 +1,14 @@
 package com.switchfully.jaws.api;
 
+import com.switchfully.jaws.services.division.dtos.DivisionDto;
 import com.switchfully.jaws.services.parkingLot.ParkingLotService;
 import com.switchfully.jaws.services.parkingLot.dtos.CreateParkingLotDto;
 import com.switchfully.jaws.services.parkingLot.dtos.ParkingLotDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static org.springframework.http.MediaType.*;
 
@@ -25,6 +28,12 @@ public class ParkingLotController {
     @ResponseStatus(HttpStatus.CREATED)
     public ParkingLotDto createParkingLot(@RequestBody CreateParkingLotDto createParkingLotDto) {
         return parkingLotService.createParkingLot(createParkingLotDto);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<ParkingLotDto> getAllParkingLots(){
+        return parkingLotService.getAllParkingLots();
     }
 
     // Method for testing createParkingLot(CreateParkingLotDto)
