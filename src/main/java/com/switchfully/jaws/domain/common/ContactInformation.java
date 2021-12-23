@@ -1,4 +1,4 @@
-package com.switchfully.jaws.domain.user;
+package com.switchfully.jaws.domain.common;
 
 import com.switchfully.jaws.Exceptions.EmailAddressIsInvalidException;
 
@@ -97,4 +97,5 @@ public final class ContactInformation {
             return result;
         }
     }
+
 }
