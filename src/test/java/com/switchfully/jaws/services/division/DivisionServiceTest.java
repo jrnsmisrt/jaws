@@ -4,18 +4,12 @@ import com.switchfully.jaws.domain.Division;
 import com.switchfully.jaws.repositories.DivisionRepository;
 import com.switchfully.jaws.services.division.dtos.CreateDivisionDto;
 import com.switchfully.jaws.services.division.dtos.DivisionMapper;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
-@SpringBootTest
 class DivisionServiceTest {
 
     private Division division;

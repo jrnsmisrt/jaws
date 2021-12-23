@@ -1,6 +1,6 @@
 package com.switchfully.jaws.repositories;
 
-import com.switchfully.jaws.domain.User;
+import com.switchfully.jaws.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
