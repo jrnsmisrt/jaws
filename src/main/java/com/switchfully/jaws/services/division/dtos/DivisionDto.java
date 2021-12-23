@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Optional;
 
 public class DivisionDto{
+    @JsonProperty("division_id")
+    private Long divisionId;
     private final String name;
     @JsonProperty("original_name")
     private final String originalName;
@@ -15,6 +17,7 @@ public class DivisionDto{
     private Optional<Long> parentDivisionId;
 
     private DivisionDto (DivisionDtoBuilder builder) {
+        this.divisionId = builder.divisionId;
         this.name = builder.name;
         this.originalName = builder.originalName;
         this.directorFullName = builder.directorFullName;
@@ -22,6 +25,7 @@ public class DivisionDto{
     }
 
     public static class DivisionDtoBuilder {
+        private Long divisionId;
         private String name;
         private String originalName;
         private String directorFullName;
@@ -47,6 +51,11 @@ public class DivisionDto{
 
         public DivisionDtoBuilder withParentDivisionId(Optional<Long> parentDivisionId) {
             this.parentDivisionId = parentDivisionId;
+            return this;
+        }
+
+        public DivisionDtoBuilder withDivisionId(Long divisionId) {
+            this.divisionId = divisionId;
             return this;
         }
 

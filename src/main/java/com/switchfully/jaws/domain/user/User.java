@@ -1,15 +1,8 @@
-package com.switchfully.jaws.domain;
+package com.switchfully.jaws.domain.user;
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -28,17 +21,30 @@ public class User {
     @Column(name = "license_plate", nullable = false)
     private String licensePlate;
 
-    @Column(name = "registration_date", nullable = false)
+    @Column(name = "registration_date")
     private LocalDate registrationDate;
 
-    @OneToOne
-    @JoinColumn(name = "fk_user", nullable = false)
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "fk_address_id", nullable = false)
     private Address address;
 
     @Embedded
     private ContactInformation contactInformation;
 
     protected User() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(contactInformation, user.contactInformation);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(contactInformation);
     }
 
     private User(UserBuilder builder) {
@@ -51,12 +57,30 @@ public class User {
 
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getLicensePlate() {
+        return licensePlate;
+    }
+
+    public LocalDate getRegistrationDate() {
+        return registrationDate;
+    }
+
     public static class UserBuilder {
         private String firstName;
         private String lastName;
         private String licensePlate;
-
-        private LocalDate registrationDate;
         private Address address;
         private ContactInformation contactInformation;
 
@@ -75,11 +99,6 @@ public class User {
 
         public UserBuilder withLicensePlate(String licensePlate) {
             this.licensePlate = licensePlate;
-            return this;
-        }
-
-        public UserBuilder withRegistrationDate(LocalDate registrationDate) {
-            this.registrationDate = registrationDate;
             return this;
         }
 
@@ -102,15 +121,9 @@ public class User {
         return address;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
     public ContactInformation getContactInformation() {
         return contactInformation;
     }
 
-    public void setContactInformation(ContactInformation contactInformation) {
-        this.contactInformation = contactInformation;
-    }
+
 }

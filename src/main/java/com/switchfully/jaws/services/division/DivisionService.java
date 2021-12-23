@@ -41,9 +41,7 @@ public class DivisionService {
         if (createDivisionDTO.getParentDivisionId() != null) {
             Optional<Division> parentDivision = divisionRepository.findById(createDivisionDTO.getParentDivisionId());
             parentDivision.ifPresentOrElse(parentDiv -> parentDiv.addSubdivision(division),
-                    () -> {
-                        throw new ParentDivisionNotFoundException();
-                    });
+                    () -> {throw new ParentDivisionNotFoundException();});
         }
         divisionRepository.save(division);
         return divisionMapper.mapDivisionToDivisionDto(division);
@@ -55,8 +53,7 @@ public class DivisionService {
                 .collect(Collectors.toList());
     }
 
-
-    private boolean nameDoesNotExists(CreateDivisionDto createDivisionDto) {//TODO
+    private boolean nameDoesNotExists(CreateDivisionDto createDivisionDto) {
         return divisionRepository.findAll().stream()
                 .map(Division::getName)
                 .noneMatch(name -> name.equalsIgnoreCase(divisionMapper.mapDivisionDtoToDivision(createDivisionDto).getName()));

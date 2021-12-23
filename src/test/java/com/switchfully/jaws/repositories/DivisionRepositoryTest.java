@@ -14,10 +14,6 @@ import org.springframework.test.context.ActiveProfiles;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import java.util.List;
-
-import static java.lang.String.format;
-
 @DataJpaTest
 @ActiveProfiles("test")
 public class DivisionRepositoryTest {
@@ -82,18 +78,4 @@ public class DivisionRepositoryTest {
         Executable method = () -> divisionRepository.save(null);
         Assertions.assertThrows(InvalidDataAccessApiUsageException.class, method, "Division cannot be null");
     }
-
-//    @Test
-//    public void whenDivisionsAreGet_thenReturnAll(){
-//        divisionRepository.save(division);
-//        divisionRepository.save(dummyDivision);
-//        List<Division> divisions = List.of(division, dummyDivision);
-//        Assertions.assertEquals(divisions, divisionRepository.findAll());
-//    }
-//
-//    @Test
-//    public void gettingNullValue_whenDivisionsAreGet_thenThrowExceptions(){
-//        List<Division> divisions = divisionRepository.findAll();
-//        Assertions.assertFalse(divisions != null);
-//    }
 }

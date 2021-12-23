@@ -33,6 +33,7 @@ public class DivisionMapper {
                 .withDirectorFullName(division.getDirectorFullName())
                 .withOriginalName(division.getOriginalName())
                 .withParentDivisionId(divisionRepository.findDivisionsBySubDivisionsIn(division.getName()))
+                .withDivisionId(division.getId())
                 .build();
     }
 }
