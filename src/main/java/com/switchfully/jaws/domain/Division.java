@@ -1,11 +1,16 @@
 package com.switchfully.jaws.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -26,7 +31,12 @@ public class Division {
     @Column(name = "director_fullname", nullable = false)
     private String directorFullName;
 
-    protected Division() {}
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "parent_div_fk")
+    private List<Division> subDivisions;
+
+    protected Division() {
+    }
 
     private Division(DivisionBuilder builder) {
         this.name = builder.name;
@@ -82,6 +92,7 @@ public class Division {
                 ", name='" + name + '\'' +
                 ", originalName='" + originalName + '\'' +
                 ", directorFullName='" + directorFullName + '\'' +
+                ", parentDivisionId=" + subDivisions +
                 '}';
     }
 
@@ -99,5 +110,16 @@ public class Division {
 
     public String getDirectorFullName() {
         return directorFullName;
+    }
+
+    public List<Division> getSubDivisions() {
+        return subDivisions;
+    }
+
+    public void addSubdivision(Division division) {
+        if (getSubDivisions() == null) {
+            this.subDivisions = new ArrayList<>();
+        }
+        subDivisions.add(division);
     }
 }

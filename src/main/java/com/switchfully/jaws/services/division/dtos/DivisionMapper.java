@@ -2,21 +2,38 @@ package com.switchfully.jaws.services.division.dtos;
 
 
 import com.switchfully.jaws.domain.Division;
+import com.switchfully.jaws.repositories.DivisionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class DivisionMapper {
 
-    public Division mapDivisionDtoToDivision(CreateDivisionDto createDivisionDto){
-         return new Division.DivisionBuilder()
-                 .withName(createDivisionDto.name())
-                 .withDirectorFullName(createDivisionDto.directorFullName())
-                 .withOriginalName(createDivisionDto.originalName())
-                 .build();
+    private final DivisionRepository divisionRepository;
+
+    @Autowired
+    public DivisionMapper(DivisionRepository divisionRepository) {
+        this.divisionRepository = divisionRepository;
     }
 
-    public DivisionDto mapDivisionToDivisionDto(Division division){
-         return new DivisionDto(division.getId(), division.getName(), division.getOriginalName(), division.getDirectorFullName());
+    public Division mapDivisionDtoToDivision(CreateDivisionDto createDivisionDto) {
+        return new Division.DivisionBuilder()
+                .withName(createDivisionDto.getName())
+                .withDirectorFullName(createDivisionDto.getDirectorFullName())
+                .withOriginalName(createDivisionDto.getOriginalName())
+                .build();
     }
 
+    public DivisionDto mapDivisionToDivisionDto(Division division) {
+        return new DivisionDto.DivisionDtoBuilder()
+                .withName(division.getName())
+                .withDirectorFullName(division.getDirectorFullName())
+                .withOriginalName(division.getOriginalName())
+                .withParentDivisionId(divisionRepository.findDivisionsBySubDivisionsIn(division.getName()))
+                .withDivisionId(division.getId())
+                .build();
+    }
 }
