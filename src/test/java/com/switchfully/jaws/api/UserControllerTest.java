@@ -4,7 +4,6 @@ import com.switchfully.jaws.domain.common.ContactInformation;
 import com.switchfully.jaws.domain.user.User;
 import com.switchfully.jaws.repositories.UserRepository;
 import com.switchfully.jaws.services.user.UserService;
-import com.switchfully.jaws.services.user.dto.CreateAddressDto;
 import com.switchfully.jaws.services.common.dto.AddressMapper;
 import com.switchfully.jaws.services.common.dto.ContactInformationDto;
 import com.switchfully.jaws.services.common.dto.ContactInformationMapper;
@@ -24,13 +23,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @ActiveProfiles("test")
 class UserControllerTest {
 
     private UserController userController;
+    private UserService userService;
     private final UserMapper userMapper = new UserMapper(new AddressMapper(), new ContactInformationMapper());
     private final UserRepository userRepository;
 
@@ -41,7 +40,6 @@ class UserControllerTest {
     UserControllerTest(UserRepository userRepository, UserService userService) {
         this.userRepository = userRepository;
         this.userService = userService;
-
     }
 
     @BeforeEach
