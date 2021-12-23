@@ -1,9 +1,11 @@
 package com.switchfully.jaws.api;
 
-import com.switchfully.jaws.domain.user.ContactInformation;
+import com.switchfully.jaws.domain.common.ContactInformation;
 import com.switchfully.jaws.domain.user.User;
 import com.switchfully.jaws.repositories.UserRepository;
-import com.switchfully.jaws.services.user.dto.CreateAddressDto;
+import com.switchfully.jaws.services.common.dto.AddressMapper;
+import com.switchfully.jaws.services.common.dto.ContactInformationMapper;
+import com.switchfully.jaws.services.common.dto.CreateAddressDto;
 import com.switchfully.jaws.services.user.dto.CreateUserDto;
 import com.switchfully.jaws.services.user.dto.UserDto;
 import com.switchfully.jaws.services.user.dto.UserMapper;
@@ -18,14 +20,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @ActiveProfiles("test")
 class UserControllerTest {
 
+    @Autowired
+    private AddressMapper addressMapper;
+
+    @Autowired
+    private ContactInformationMapper contactInformationMapper;
+
+    @Autowired
+    private UserMapper userMapper;
+
     private UserController userController;
-    private final UserMapper userMapper = new UserMapper();
     private final UserRepository userRepository;
 
     @Value("${server.port}")
