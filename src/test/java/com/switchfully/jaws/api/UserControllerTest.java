@@ -4,6 +4,7 @@ import com.switchfully.jaws.domain.common.ContactInformation;
 import com.switchfully.jaws.domain.user.User;
 import com.switchfully.jaws.repositories.UserRepository;
 import com.switchfully.jaws.services.common.dto.AddressMapper;
+import com.switchfully.jaws.services.common.dto.ContactInformationDto;
 import com.switchfully.jaws.services.common.dto.ContactInformationMapper;
 import com.switchfully.jaws.services.common.dto.CreateAddressDto;
 import com.switchfully.jaws.services.user.dto.CreateUserDto;
@@ -12,6 +13,7 @@ import com.switchfully.jaws.services.user.dto.UserMapper;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,16 +27,8 @@ import java.time.LocalDate;
 @ActiveProfiles("test")
 class UserControllerTest {
 
-    @Autowired
-    private AddressMapper addressMapper;
-
-    @Autowired
-    private ContactInformationMapper contactInformationMapper;
-
-    @Autowired
-    private UserMapper userMapper;
-
     private UserController userController;
+    private final UserMapper userMapper = new UserMapper(new AddressMapper(), new ContactInformationMapper());
     private final UserRepository userRepository;
     private final AddressMapper addressMapper = new AddressMapper();
 
@@ -46,6 +40,11 @@ class UserControllerTest {
         this.userRepository = userRepository;
     }
 
+    @BeforeEach
+    void setUp() {
+
+    }
+
     @Test
     void givenCorrectInformation_RegisterMemberWorks() {
         CreateAddressDto createAddressDto = new CreateAddressDto("husestraat", "22", "Gent", "Belgium", 9000);
@@ -55,7 +54,9 @@ class UserControllerTest {
                 .withHomePhoneNumber("5405465")
                 .build();
 
-        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, userMapper.toContactInformationDto(contactInformation));
+        ContactInformationDto contactInformationDto = new ContactInformationMapper().mapEntityToDto(contactInformation);
+
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, contactInformationDto);
 
         UserDto userDto = RestAssured
                 .given()
@@ -92,7 +93,9 @@ class UserControllerTest {
                 .withHomePhoneNumber("5405465")
                 .build();
 
-        CreateUserDto createUserDto2 = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto2, userMapper.toContactInformationDto(contactInformation2));
+        ContactInformationDto contactInformationDto2 = new ContactInformationMapper().mapEntityToDto(contactInformation2);
+
+        CreateUserDto createUserDto2 = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto2, contactInformationDto2);
 
 
         User userAlreadyInRepository = new User.UserBuilder()
@@ -111,7 +114,9 @@ class UserControllerTest {
                 .withHomePhoneNumber("5405465")
                 .build();
 
-        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto2, userMapper.toContactInformationDto(contactInformation));
+        ContactInformationDto contactInformationDto = new ContactInformationMapper().mapEntityToDto(contactInformation);
+
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto2, contactInformationDto);
 
 
         UserDto userDto = RestAssured
@@ -149,7 +154,9 @@ class UserControllerTest {
                 .withHomePhoneNumber("5405465")
                 .build();
 
-        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, userMapper.toContactInformationDto(contactInformation));
+        ContactInformationDto contactInformationDto = new ContactInformationMapper().mapEntityToDto(contactInformation);
+
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, contactInformationDto);
 
 
         RestAssured
@@ -166,7 +173,7 @@ class UserControllerTest {
     }
 
     @Test
-    void givenAlreadyExistingUserAsInput_RegisterMemberWorks_GivesException() {
+    void givenAlreadyExistingUserAssInput_RegisterMemberWorks_GivesException() {
         CreateAddressDto createAddressDto = new CreateAddressDto("husestraat", "2", "Gent", "Belgium", 9000);
         ContactInformation contactInformation = new ContactInformation.ContactInfoBuilder()
                 .withCellPhoneNumber("0458235")
@@ -174,7 +181,9 @@ class UserControllerTest {
                 .withHomePhoneNumber("5405465")
                 .build();
 
-        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, userMapper.toContactInformationDto(contactInformation));
+        ContactInformationDto contactInformationDto = new ContactInformationMapper().mapEntityToDto(contactInformation);
+
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, contactInformationDto);
 
         userRepository.save(userMapper.toUser(createUserDto));
 
@@ -200,7 +209,9 @@ class UserControllerTest {
                 .withHomePhoneNumber("5405465")
                 .build();
 
-        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", null, userMapper.toContactInformationDto(contactInformation));
+        ContactInformationDto contactInformationDto = new ContactInformationMapper().mapEntityToDto(contactInformation);
+
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", null, contactInformationDto);
 
 
         RestAssured
