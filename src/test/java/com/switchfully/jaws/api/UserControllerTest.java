@@ -166,6 +166,31 @@ class UserControllerTest {
     }
 
     @Test
+    void givenEmailNull_RegisterMemberWorks_GivesException() {
+        CreateAddressDto createAddressDto = new CreateAddressDto("husestraat", "null", "Gent", "Belgium", 9000);
+        ContactInformation contactInformation = new ContactInformation.ContactInfoBuilder()
+                .withCellPhoneNumber("0458235")
+                .withEmailAddress(null)
+                .withHomePhoneNumber("5405465")
+                .build();
+
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, userMapper.toContactInformationDto(contactInformation));
+
+
+        RestAssured
+                .given()
+                .body(createUserDto)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .when()
+                .port(port)
+                .post("/users")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
     void givenAlreadyExistingUserAssInput_RegisterMemberWorks_GivesException() {
         CreateAddressDto createAddressDto = new CreateAddressDto("husestraat", "2", "Gent", "Belgium", 9000);
         ContactInformation contactInformation = new ContactInformation.ContactInfoBuilder()

@@ -1,5 +1,6 @@
 package com.switchfully.jaws.services.user;
 
+import com.switchfully.jaws.Exceptions.EmailAddressIsInvalidException;
 import com.switchfully.jaws.Exceptions.ObjectAlreadyExist;
 import com.switchfully.jaws.domain.user.User;
 import com.switchfully.jaws.repositories.UserRepository;
@@ -9,6 +10,8 @@ import com.switchfully.jaws.services.user.dto.UserMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import java.util.List;
 
 @Service
@@ -25,6 +28,7 @@ public class UserService {
         return userRepository.findAll();
     }
     public UserDto addUser(CreateUserDto createUserDto) {
+        checkIfValidEmail(createUserDto.contactInformationDto().emailAddress());
         User user = userMapper.toUser(createUserDto);
         if (getAllUser().contains(user)) {
             throw new ObjectAlreadyExist("User" + createUserDto.toString());
@@ -52,5 +56,22 @@ public class UserService {
                     .append("\n___________\n");
         }
         return overview + membersoverview;
+    }
+
+    private void checkIfValidEmail(String email) {
+        if (!isValidEmailAddress(email)) {
+            throw new EmailAddressIsInvalidException(email);
+        }
+    }
+
+    private boolean isValidEmailAddress(String email) {
+        boolean result = true;
+        try {
+            InternetAddress emailAddress = new InternetAddress(email);
+            emailAddress.validate();
+        } catch (AddressException ex) {
+            result = false;
+        }
+        return result;
     }
 }
