@@ -29,4 +29,8 @@ public class ParkingLotService {
         return parkingLotMapper.mapEntityToDto(parkingLot);
     }
 
+    public ParkingLotDto getParkingLotById(Long id) {
+        return parkingLotMapper.mapEntityToDto(parkingLotRepository.getById(id));
+    }
+
 }

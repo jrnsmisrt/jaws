@@ -27,4 +27,9 @@ public class ParkingLotController {
         return parkingLotService.createParkingLot(createParkingLotDto);
     }
 
+    // Method for testing createParkingLot(CreateParkingLotDto)
+    public ParkingLotDto getParkingLotById(Long id) {
+        return parkingLotService.getParkingLotById(id);
+    }
+
 }
