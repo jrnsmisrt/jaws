@@ -32,31 +32,4 @@ public class UserMapper {
                 .withLicensePlate(createUserDto.licensePlate())
                 .build();
     }
-
-    public Address toAddress(CreateAddressDto addressDto) {
-        return new Address.AddressBuilder()
-                .withCity(addressDto.city())
-                .withCountry(addressDto.country())
-                .withStreet(addressDto.street())
-                .withStreetNumber(addressDto.streetNumber())
-                .withZipCode(addressDto.zipCode())
-                .build();
-    }
-
-    public ContactInformation toContactInformation(ContactInformationDto contactInformationDto) {
-        return new ContactInformation.ContactInfoBuilder()
-                .withCellPhoneNumber(contactInformationDto.cellPhoneNumber())
-                .withEmailAddress(contactInformationDto.emailAddress())
-                .withHomePhoneNumber(contactInformationDto.homePhoneNumber())
-                .build();
-    }
-
-    public AddressDto toAddressDto(Address address) {
-        return new AddressDto(address.getId(), address.getStreet(), address.getStreetNumber(), address.getCity(), address.getCountry(), address.getZipCode());
-    }
-
-    public ContactInformationDto toContactInformationDto(ContactInformation contactInformation){
-        return new ContactInformationDto(contactInformation.getCellphoneNumber(), contactInformation.getHomePhoneNumber(), contactInformation.getEmailAddress());
-    }
-
 }
