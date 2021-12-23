@@ -1,9 +1,5 @@
 package com.switchfully.jaws.domain.user;
 
-import com.switchfully.jaws.Exceptions.EmailAddressIsInvalidException;
-
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.util.Objects;
