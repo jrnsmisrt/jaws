@@ -28,13 +28,24 @@ public class DivisionService {
 
     public DivisionDto createDivision(CreateDivisionDto createDivisionDTO) {
         if (nameDoesNotExists(createDivisionDTO)) {
-            Division division = divisionMapper.mapDivisionDtoToDivision(createDivisionDTO);
-            divisionRepository.save(division);
-            return divisionMapper.mapDivisionToDivisionDto(division);
+            Division parent = divisionRepository.getById(createDivisionDTO.getParentId());
+            if(parent != null){
+                Division subDivision = divisionMapper.mapDivisionDtoToDivision(createDivisionDTO);
+                divisionRepository.save(subDivision);
+                parent.addSubDivision(subDivision);
+                return divisionMapper.mapDivisionToDivisionDto(subDivision);
+            }
+            else {
+                Division division = divisionMapper.mapDivisionDtoToDivision(createDivisionDTO);
+                divisionRepository.save(division);
+                return divisionMapper.mapDivisionToDivisionDto(division);
+            }
         } else {
             throw new IllegalArgumentException("division already exist");
         }
     }
+
+
 
     public List<DivisionDto> getAllDivisions() {
         return divisionRepository.findAll().stream()
@@ -48,4 +59,6 @@ public class DivisionService {
                 .map(Division::getName)
                 .noneMatch(name -> name.equalsIgnoreCase(divisionMapper.mapDivisionDtoToDivision(createDivisionDto).getName()));
     }
+
+
 }

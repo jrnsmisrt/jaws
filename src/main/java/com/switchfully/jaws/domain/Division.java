@@ -30,6 +30,7 @@ public class Division {
     @Column(name = "director_fullname", nullable = false)
     private String directorFullName;
 
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "parent_div_fk", referencedColumnName = "id_division")
     @Column(name = "parent_division_id")
@@ -120,5 +121,10 @@ public class Division {
 
     public List<Division> getParentDivisionId() {
         return parentDivisionId;
+    }
+
+
+    public void addSubDivision(Division subDivision){
+        this.parentDivisionId.add(subDivision);
     }
 }

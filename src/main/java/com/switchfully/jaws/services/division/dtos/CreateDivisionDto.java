@@ -14,11 +14,15 @@ public class CreateDivisionDto {
     @JsonProperty("all_subdivisions")
     private final Optional<List<CreateDivisionDto>> createDivisionDtoList;
 
-    private CreateDivisionDto(String name, String originalName, String directorFullName, Optional<List<CreateDivisionDto>> createDivisionDtoList) {
+    @JsonProperty("parent_div_fk")
+    private  long parentId;
+
+    private CreateDivisionDto(String name, String originalName, String directorFullName, Optional<List<CreateDivisionDto>> createDivisionDtoList, long parentId) {
         this.name = name;
         this.originalName = originalName;
         this.directorFullName = directorFullName;
         this.createDivisionDtoList = createDivisionDtoList;
+        this.parentId = parentId;
     }
 
     private CreateDivisionDto (CreateDivisionDtoBuilder builder) {
@@ -26,6 +30,7 @@ public class CreateDivisionDto {
         this.originalName = builder.originalName;
         this.directorFullName = builder.directorFullName;
         this.createDivisionDtoList = Optional.ofNullable(builder.createDivisionDtoList);
+        this.parentId = builder.parentId;
     }
 
     public static class CreateDivisionDtoBuilder {
@@ -33,6 +38,7 @@ public class CreateDivisionDto {
         private String originalName;
         private String directorFullName;
         private List<CreateDivisionDto> createDivisionDtoList;
+        private long parentId;
 
         public CreateDivisionDtoBuilder() {
         }
@@ -76,5 +82,9 @@ public class CreateDivisionDto {
 
     public Optional<List<CreateDivisionDto>> getCreateDivisionDtoList() {
         return createDivisionDtoList;
+    }
+
+    public long getParentId() {
+        return parentId;
     }
 }
