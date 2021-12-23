@@ -1,6 +1,5 @@
 package com.switchfully.jaws.repositories;
 
-
 import com.switchfully.jaws.domain.Division;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

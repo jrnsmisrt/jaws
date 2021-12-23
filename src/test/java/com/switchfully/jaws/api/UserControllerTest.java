@@ -214,30 +214,28 @@ class UserControllerTest {
 
     @Test
     void givenBadEmailAddress_RegisterMemberWorks_GivesException() {
-//        CreateAddressDto createAddressDto = new CreateAddressDto("husestraat", null, "Gent", "Belgium", 9000);
-//        ContactInformation contactInformation = new ContactInformation.ContactInfoBuilder()
-//                .withCellPhoneNumber("0458235")
-//                .withEmailAddress("Jeroen.smissaertoutlook.com")
-//                .withHomePhoneNumber("5405465")
-//                .build();
-//
-//        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, userMapper.toContactInformationDto(contactInformation));
-//
-//
-//        RestAssured
-//                .given()
-//                .body(createUserDto)
-//                .accept(ContentType.JSON)
-//                .contentType(ContentType.JSON)
-//                .when()
-//                .port(port)
-//                .post("/users")
-//                .then()
-//                .assertThat()
-//                .statusCode(HttpStatus.BAD_REQUEST.value());
-    }
-    // Add user test for email on User class
+        CreateAddressDto createAddressDto = new CreateAddressDto("husestraat", null, "Gent", "Belgium", 9000);
+        ContactInformation contactInformation = new ContactInformation.ContactInfoBuilder()
+                .withCellPhoneNumber("0458235")
+                .withEmailAddress("Jeroen.smissaertoutlook.com")
+                .withHomePhoneNumber("5405465")
+                .build();
 
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, userMapper.toContactInformationDto(contactInformation));
+
+
+        RestAssured
+                .given()
+                .body(createUserDto)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .when()
+                .port(port)
+                .post("/users")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
 
     @Test
     void givenUserDto_WhenGetAllMembersOverviewIsCalled_OverviewContainsSaidUserDto(){
