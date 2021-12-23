@@ -41,7 +41,6 @@ class UserControllerTest {
 
     }
 
-
     @Test
     void givenCorrectInformation_RegisterMemberWorks() {
         CreateAddressDto createAddressDto = new CreateAddressDto("husestraat", "22", "Gent", "Belgium", 9000);

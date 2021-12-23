@@ -11,10 +11,10 @@ public class Address {
     @Column(name = "id_address")
     private Long id;
 
-    @Column(name = "street" ,nullable = false)
+    @Column(name = "street", nullable = false)
     private String street;
 
-    @Column(name = "street_number" ,nullable = false)
+    @Column(name = "street_number", nullable = false)
     private String streetNumber;
 
     @Column(name = "city", nullable = false)
