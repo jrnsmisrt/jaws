@@ -21,6 +21,7 @@ public class UserService {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
     }
+
     public List<User> getAllUser() {
         return userRepository.findAll();
     }
@@ -32,9 +33,8 @@ public class UserService {
         }
 
         User userOut = userRepository.save(user);
-        UserDto userDto = userMapper.toUserDto(userOut);
 
-        return userDto;
+        return userMapper.toUserDto(userOut);
     }
 
     public String getAllMembersOverview() {

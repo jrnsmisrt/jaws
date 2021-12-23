@@ -1,5 +1,8 @@
 package com.switchfully.jaws.domain.user;
 
+import com.switchfully.jaws.domain.common.Address;
+import com.switchfully.jaws.domain.common.ContactInformation;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;

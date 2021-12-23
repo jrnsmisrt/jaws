@@ -1,4 +1,4 @@
-package com.switchfully.jaws.domain.user;
+package com.switchfully.jaws.domain.common;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -11,10 +11,10 @@ public class Address {
     @Column(name = "id_address")
     private Long id;
 
-    @Column(name = "street" ,nullable = false)
+    @Column(name = "street", nullable = false)
     private String street;
 
-    @Column(name = "street_number" ,nullable = false)
+    @Column(name = "street_number", nullable = false)
     private String streetNumber;
 
     @Column(name = "city", nullable = false)
