@@ -2,10 +2,12 @@ package com.switchfully.jaws.domain.user;
 
 import com.switchfully.jaws.Exceptions.InvalidMemberShipLevelInputException;
 
+import com.switchfully.jaws.domain.common.Address;
+import com.switchfully.jaws.domain.common.ContactInformation;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -29,9 +31,8 @@ public class User {
     @Column(name = "registration_date")
     private LocalDate registrationDate;
 
-    @Column(name="member_ship_level")
+//    @Column(name = "member_ship_level")
     private String memberShipLevelName;
-
 
     @Embedded
     private ContactInformation contactInformation;
@@ -81,6 +82,10 @@ public class User {
 
     public String getMemberShipLevelName() {
         return memberShipLevelName;
+    }
+
+    public void setMemberShipLevelName(String memberShipLevelName) {
+        this.memberShipLevelName = memberShipLevelName;
     }
 
     public Long getId() {

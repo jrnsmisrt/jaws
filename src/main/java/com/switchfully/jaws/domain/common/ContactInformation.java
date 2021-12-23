@@ -1,4 +1,4 @@
-package com.switchfully.jaws.domain.user;
+package com.switchfully.jaws.domain.common;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -75,4 +75,5 @@ public final class ContactInformation {
             return new ContactInformation(this);
         }
     }
+
 }

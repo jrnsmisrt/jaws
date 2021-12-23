@@ -1,11 +1,13 @@
 package com.switchfully.jaws.api;
 
-import com.switchfully.jaws.domain.user.ContactInformation;
-import com.switchfully.jaws.domain.user.MemberShipLevel;
+import com.switchfully.jaws.domain.common.ContactInformation;
 import com.switchfully.jaws.domain.user.User;
 import com.switchfully.jaws.repositories.UserRepository;
 import com.switchfully.jaws.services.user.UserService;
-import com.switchfully.jaws.services.user.dto.CreateAddressDto;
+import com.switchfully.jaws.services.common.dto.AddressMapper;
+import com.switchfully.jaws.services.common.dto.ContactInformationDto;
+import com.switchfully.jaws.services.common.dto.ContactInformationMapper;
+import com.switchfully.jaws.services.common.dto.CreateAddressDto;
 import com.switchfully.jaws.services.user.dto.CreateUserDto;
 import com.switchfully.jaws.services.user.dto.UserDto;
 import com.switchfully.jaws.services.user.dto.UserMapper;
@@ -21,14 +23,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @ActiveProfiles("test")
 class UserControllerTest {
 
+    private UserController userController;
     private UserService userService;
-    private final UserMapper userMapper = new UserMapper();
+    private final UserMapper userMapper = new UserMapper(new AddressMapper(), new ContactInformationMapper());
     private final UserRepository userRepository;
 
     @Value("${server.port}")
@@ -38,14 +40,12 @@ class UserControllerTest {
     UserControllerTest(UserRepository userRepository, UserService userService) {
         this.userRepository = userRepository;
         this.userService = userService;
-
     }
 
     @BeforeEach
     void setUp() {
 
     }
-
 
     @Test
     void givenCorrectInformation_RegisterMemberWorks() {
@@ -56,7 +56,9 @@ class UserControllerTest {
                 .withHomePhoneNumber("5405465")
                 .build();
 
-        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, userMapper.toContactInformationDto(contactInformation), "bronze");
+        ContactInformationDto contactInformationDto = new ContactInformationMapper().mapEntityToDto(contactInformation);
+
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, contactInformationDto,"bronze");
 
         UserDto userDto = RestAssured
                 .given()
@@ -94,7 +96,9 @@ class UserControllerTest {
                 .withHomePhoneNumber("5405465")
                 .build();
 
-        CreateUserDto createUserDto2 = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto2, userMapper.toContactInformationDto(contactInformation2), "silver");
+        ContactInformationDto contactInformationDto2 = new ContactInformationMapper().mapEntityToDto(contactInformation2);
+
+        CreateUserDto createUserDto2 = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto2, contactInformationDto2,null);
 
 
         User userAlreadyInRepository = new User.UserBuilder()
@@ -113,7 +117,9 @@ class UserControllerTest {
                 .withHomePhoneNumber("5405465")
                 .build();
 
-        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto2, userMapper.toContactInformationDto(contactInformation), null);
+        ContactInformationDto contactInformationDto = new ContactInformationMapper().mapEntityToDto(contactInformation);
+
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto2, contactInformationDto,null);
 
 
         UserDto userDto = RestAssured
@@ -176,8 +182,9 @@ class UserControllerTest {
                 .withHomePhoneNumber("5405465")
                 .build();
 
-        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, userMapper.toContactInformationDto(contactInformation), "gold");
+        ContactInformationDto contactInformationDto = new ContactInformationMapper().mapEntityToDto(contactInformation);
 
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, contactInformationDto,null);
 
         RestAssured
                 .given()
@@ -201,7 +208,9 @@ class UserControllerTest {
                 .withHomePhoneNumber("5405465")
                 .build();
 
-        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, userMapper.toContactInformationDto(contactInformation), "silver");
+        ContactInformationDto contactInformationDto = new ContactInformationMapper().mapEntityToDto(contactInformation);
+
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, contactInformationDto,null);
 
         userRepository.save(userMapper.toUser(createUserDto));
 
@@ -227,7 +236,9 @@ class UserControllerTest {
                 .withHomePhoneNumber("5405465")
                 .build();
 
-        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", null, userMapper.toContactInformationDto(contactInformation), null);
+        ContactInformationDto contactInformationDto = new ContactInformationMapper().mapEntityToDto(contactInformation);
+
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", null, contactInformationDto,null);
 
 
         RestAssured

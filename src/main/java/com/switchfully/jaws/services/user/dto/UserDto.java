@@ -1,5 +1,7 @@
 package com.switchfully.jaws.services.user.dto;
 
+import com.switchfully.jaws.services.common.dto.AddressDto;
+import com.switchfully.jaws.services.common.dto.ContactInformationDto;
 
 import java.time.LocalDate;
 

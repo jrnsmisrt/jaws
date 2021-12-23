@@ -1,10 +1,14 @@
 package com.switchfully.jaws.services.user;
 
-import com.switchfully.jaws.domain.user.Address;
-import com.switchfully.jaws.domain.user.ContactInformation;
+import com.switchfully.jaws.domain.common.Address;
+import com.switchfully.jaws.domain.common.ContactInformation;
 import com.switchfully.jaws.domain.user.MemberShipLevel;
 import com.switchfully.jaws.domain.user.User;
 import com.switchfully.jaws.repositories.UserRepository;
+import com.switchfully.jaws.services.common.dto.AddressMapper;
+import com.switchfully.jaws.services.common.dto.ContactInformationDto;
+import com.switchfully.jaws.services.common.dto.ContactInformationMapper;
+import com.switchfully.jaws.services.common.dto.CreateAddressDto;
 import com.switchfully.jaws.services.user.dto.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +20,7 @@ import java.util.List;
 class UserServiceTest {
     private UserRepository userRepository;
     private UserService userService;
-    private UserMapper userMapper;
+    private UserMapper userMapper = new UserMapper(new AddressMapper(), new ContactInformationMapper());
 
     private Address address = new Address.AddressBuilder()
             .withCity("Gent")
@@ -56,12 +60,13 @@ class UserServiceTest {
 
     private final CreateAddressDto createAddressDto = new CreateAddressDto(address.getStreet(), address.getStreetNumber(), address.getCity(), address.getCountry(), address.getZipCode());
     private final ContactInformationDto contactInformationDto = new ContactInformationDto(contactInformation.getCellphoneNumber(), contactInformation.getHomePhoneNumber(), contactInformation.getEmailAddress());
-    private final CreateUserDto createUserDto = new CreateUserDto(testUser.getFirstName(), testUser.getLastName(), testUser.getLicensePlate(), createAddressDto, contactInformationDto, null);
+    private final CreateUserDto createUserDto = new CreateUserDto(testUser.getFirstName(), testUser.getLastName(), testUser.getLicensePlate(), createAddressDto, contactInformationDto, testUser.getMemberShipLevelName());
 
 
     @BeforeEach
     void setUpStockService() {
         userRepository = Mockito.mock(UserRepository.class);
+        userService = new UserService(userRepository, userMapper);
         userMapper = Mockito.mock(UserMapper.class);
         userService = new UserService(userRepository, userMapper);
     }
