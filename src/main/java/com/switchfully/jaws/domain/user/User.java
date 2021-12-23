@@ -31,7 +31,7 @@ public class User {
     @Column(name = "registration_date")
     private LocalDate registrationDate;
 
-//    @Column(name = "member_ship_level")
+    @Column(name = "member_ship_level")
     private String memberShipLevelName;
 
     @Embedded
@@ -41,7 +41,7 @@ public class User {
     @JoinColumn(name = "fk_address_id", nullable = false)
     private Address address;
 
-
+    @Transient
     private MemberShipLevel memberShipLevel;
 
     protected User() {
@@ -82,10 +82,6 @@ public class User {
 
     public String getMemberShipLevelName() {
         return memberShipLevelName;
-    }
-
-    public void setMemberShipLevelName(String memberShipLevelName) {
-        this.memberShipLevelName = memberShipLevelName;
     }
 
     public Long getId() {
@@ -155,6 +151,7 @@ public class User {
                     .stream()
                     .filter(level -> level.getMemberShipLevelName().equals(memberShipLevelName))
                     .findFirst();
+
 
             if (optionalLevel.isPresent()) {
                 this.memberShipLevelName = optionalLevel.get().getMemberShipLevelName();

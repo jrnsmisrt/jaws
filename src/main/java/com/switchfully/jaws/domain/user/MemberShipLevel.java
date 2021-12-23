@@ -7,20 +7,17 @@ public enum MemberShipLevel {
     SILVER("silver",10, 0.20, 6),
     GOLD("gold",40, 0.30, 24);
 
-    private double MonthlyCostEuro;
+    private double monthlyCostEuro;
     private double parkingSpotAllocationPricePerHourReduction;
-    private int MaximumAllowedAllocationTimeHours;
+    private int maximumAllowedAllocationTimeHours;
     private String memberShipLevelName;
 
-    MemberShipLevel() {
-
-    }
 
     MemberShipLevel(String memberShipLevelName, double monthlyCostEuro, double parkingSpotAllocationPricePerHourReduction, int maximumAllowedAllocationTimeHours) {
-        MonthlyCostEuro = monthlyCostEuro;
+        this.monthlyCostEuro = monthlyCostEuro;
         this.memberShipLevelName=memberShipLevelName;
         this.parkingSpotAllocationPricePerHourReduction = parkingSpotAllocationPricePerHourReduction;
-        MaximumAllowedAllocationTimeHours = maximumAllowedAllocationTimeHours;
+        this.maximumAllowedAllocationTimeHours = maximumAllowedAllocationTimeHours;
     }
 
     public String getMemberShipLevelName() {

@@ -58,7 +58,7 @@ class UserControllerTest {
 
         ContactInformationDto contactInformationDto = new ContactInformationMapper().mapEntityToDto(contactInformation);
 
-        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, contactInformationDto,"bronze");
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, contactInformationDto,"gold");
 
         UserDto userDto = RestAssured
                 .given()
@@ -84,6 +84,86 @@ class UserControllerTest {
         Assertions.assertThat(userDto.licensePlate()).isEqualTo(createUserDto.licensePlate());
         Assertions.assertThat(userDto.contactInformationDto()).isEqualTo(createUserDto.contactInformationDto());
         Assertions.assertThat(userDto.memberShipLevel()).isEqualTo((createUserDto.memberShipLevel()));
+        Assertions.assertThat(userDto.registrationDate()).isEqualTo(LocalDate.now());
+    }
+
+    @Test
+    void givenCorrectInformation_RegisterMemberWorksWithMemberShipLevelNull() {
+        CreateAddressDto createAddressDto = new CreateAddressDto("husestraat", "22", "Gent", "Belgium", 9000);
+        ContactInformation contactInformation = new ContactInformation.ContactInfoBuilder()
+                .withCellPhoneNumber("0458235")
+                .withEmailAddress("Jeroen.smissaertcorrectInfo@outlook.com")
+                .withHomePhoneNumber("5405465")
+                .build();
+
+        ContactInformationDto contactInformationDto = new ContactInformationMapper().mapEntityToDto(contactInformation);
+
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, contactInformationDto,null);
+
+        UserDto userDto = RestAssured
+                .given()
+                .body(createUserDto)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .when()
+                .port(port)
+                .post("/users")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .as(UserDto.class);
+
+        Assertions.assertThat(userDto.addressDto().city()).isEqualTo(createUserDto.addressDto().city());
+        Assertions.assertThat(userDto.addressDto().country()).isEqualTo(createUserDto.addressDto().country());
+        Assertions.assertThat(userDto.addressDto().street()).isEqualTo(createUserDto.addressDto().street());
+        Assertions.assertThat(userDto.addressDto().streetNumber()).isEqualTo(createUserDto.addressDto().streetNumber());
+        Assertions.assertThat(userDto.addressDto().zipCode()).isEqualTo(createUserDto.addressDto().zipCode());
+        Assertions.assertThat(userDto.firstName()).isEqualTo(createUserDto.firstName());
+        Assertions.assertThat(userDto.lastName()).isEqualTo(createUserDto.lastName());
+        Assertions.assertThat(userDto.licensePlate()).isEqualTo(createUserDto.licensePlate());
+        Assertions.assertThat(userDto.contactInformationDto()).isEqualTo(createUserDto.contactInformationDto());
+        Assertions.assertThat(userDto.memberShipLevel()).isEqualTo("bronze");
+        Assertions.assertThat(userDto.registrationDate()).isEqualTo(LocalDate.now());
+    }
+
+    @Test
+    void givenCorrectInformation_RegisterMemberWorksWithMemberShipLevelSilver() {
+        CreateAddressDto createAddressDto = new CreateAddressDto("husestraat", "22", "Gent", "Belgium", 9000);
+        ContactInformation contactInformation = new ContactInformation.ContactInfoBuilder()
+                .withCellPhoneNumber("0458235")
+                .withEmailAddress("Jeroen.smissaertcorrectInfo@outlook.com")
+                .withHomePhoneNumber("5405465")
+                .build();
+
+        ContactInformationDto contactInformationDto = new ContactInformationMapper().mapEntityToDto(contactInformation);
+
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, contactInformationDto,"silver");
+
+        UserDto userDto = RestAssured
+                .given()
+                .body(createUserDto)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .when()
+                .port(port)
+                .post("/users")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .as(UserDto.class);
+
+        Assertions.assertThat(userDto.addressDto().city()).isEqualTo(createUserDto.addressDto().city());
+        Assertions.assertThat(userDto.addressDto().country()).isEqualTo(createUserDto.addressDto().country());
+        Assertions.assertThat(userDto.addressDto().street()).isEqualTo(createUserDto.addressDto().street());
+        Assertions.assertThat(userDto.addressDto().streetNumber()).isEqualTo(createUserDto.addressDto().streetNumber());
+        Assertions.assertThat(userDto.addressDto().zipCode()).isEqualTo(createUserDto.addressDto().zipCode());
+        Assertions.assertThat(userDto.firstName()).isEqualTo(createUserDto.firstName());
+        Assertions.assertThat(userDto.lastName()).isEqualTo(createUserDto.lastName());
+        Assertions.assertThat(userDto.licensePlate()).isEqualTo(createUserDto.licensePlate());
+        Assertions.assertThat(userDto.contactInformationDto()).isEqualTo(createUserDto.contactInformationDto());
+        Assertions.assertThat(userDto.memberShipLevel()).isEqualTo(createUserDto.memberShipLevel());
         Assertions.assertThat(userDto.registrationDate()).isEqualTo(LocalDate.now());
     }
 
@@ -314,4 +394,6 @@ class UserControllerTest {
 
         Assertions.assertThat(listUserDto).contains(userDto.contactInformationDto().emailAddress());
     }
+
+
 }
