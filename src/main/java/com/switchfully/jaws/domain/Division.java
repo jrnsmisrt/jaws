@@ -31,6 +31,7 @@ public class Division {
     @Column(name = "director_fullname", nullable = false)
     private String directorFullName;
 
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "parent_div_fk")
     private List<Division> subDivisions;
@@ -122,4 +123,5 @@ public class Division {
         }
         subDivisions.add(division);
     }
+
 }
