@@ -1,6 +1,6 @@
 package com.switchfully.jaws.services.user;
 
-import com.switchfully.jaws.Exceptions.ObjectAlreadyExist;
+import com.switchfully.jaws.exceptions.ObjectAlreadyExist;
 import com.switchfully.jaws.domain.user.User;
 import com.switchfully.jaws.repositories.UserRepository;
 import com.switchfully.jaws.services.user.dto.CreateUserDto;

@@ -2,7 +2,9 @@ package com.switchfully.jaws.services.division.dtos;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.switchfully.jaws.domain.Division;
 
+import java.util.List;
 import java.util.Optional;
 
 public class DivisionDto{
@@ -15,6 +17,8 @@ public class DivisionDto{
     private final String directorFullName;
     @JsonProperty("parent_division_id")
     private Optional<Long> parentDivisionId;
+    @JsonProperty
+    private final List<Division>  subDivisions;
 
     private DivisionDto (DivisionDtoBuilder builder) {
         this.divisionId = builder.divisionId;
@@ -22,6 +26,7 @@ public class DivisionDto{
         this.originalName = builder.originalName;
         this.directorFullName = builder.directorFullName;
         this.parentDivisionId = builder.parentDivisionId;
+        this.subDivisions = builder.subdivisions;
     }
 
     public static class DivisionDtoBuilder {
@@ -30,6 +35,7 @@ public class DivisionDto{
         private String originalName;
         private String directorFullName;
         private Optional<Long> parentDivisionId;
+        private List<Division> subdivisions;
 
         public DivisionDtoBuilder() {
         }
@@ -51,6 +57,11 @@ public class DivisionDto{
 
         public DivisionDtoBuilder withParentDivisionId(Optional<Long> parentDivisionId) {
             this.parentDivisionId = parentDivisionId;
+            return this;
+        }
+
+        public DivisionDtoBuilder withSubDivision(List<Division> subdivisions){
+            this.subdivisions = subdivisions;
             return this;
         }
 

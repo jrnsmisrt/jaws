@@ -1,4 +1,4 @@
-package com.switchfully.jaws.Exceptions;
+package com.switchfully.jaws.exceptions;
 
 public class EmailAddressIsInvalidException extends RuntimeException {
     public EmailAddressIsInvalidException(String emailAddress) {

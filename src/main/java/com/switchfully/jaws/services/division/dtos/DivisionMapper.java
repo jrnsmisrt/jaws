@@ -34,6 +34,7 @@ public class DivisionMapper {
                 .withOriginalName(division.getOriginalName())
                 .withParentDivisionId(divisionRepository.findDivisionsBySubDivisionsIn(division.getName()))
                 .withDivisionId(division.getId())
+                .withSubDivision(division.getSubDivisions())
                 .build();
     }
 }

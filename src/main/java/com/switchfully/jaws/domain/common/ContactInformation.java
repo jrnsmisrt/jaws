@@ -1,6 +1,6 @@
 package com.switchfully.jaws.domain.common;
 
-import com.switchfully.jaws.Exceptions.EmailAddressIsInvalidException;
+import com.switchfully.jaws.exceptions.EmailAddressIsInvalidException;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -33,19 +33,6 @@ public final class ContactInformation {
         return emailAddress;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ContactInformation that = (ContactInformation) o;
-        return Objects.equals(emailAddress, that.emailAddress);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(emailAddress);
-    }
-
     private ContactInformation(ContactInfoBuilder builder) {
         this.cellphoneNumber = builder.cellPhoneNumber;
         this.homePhoneNumber = builder.homePhoneNumber;
@@ -53,10 +40,10 @@ public final class ContactInformation {
     }
 
     public static class ContactInfoBuilder {
+
         private String cellPhoneNumber;
         private String homePhoneNumber;
         private String emailAddress;
-
         public ContactInfoBuilder() {
         }
 
@@ -95,6 +82,19 @@ public final class ContactInformation {
                 result = false;
             }
             return result;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            ContactInformation that = (ContactInformation) o;
+            return Objects.equals(emailAddress, that.emailAddress);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(emailAddress);
         }
     }
 
