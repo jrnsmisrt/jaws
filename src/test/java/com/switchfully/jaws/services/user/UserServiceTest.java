@@ -1,7 +1,7 @@
 package com.switchfully.jaws.services.user;
 
-import com.switchfully.jaws.domain.user.Address;
-import com.switchfully.jaws.domain.user.ContactInformation;
+import com.switchfully.jaws.domain.common.Address;
+import com.switchfully.jaws.domain.common.ContactInformation;
 import com.switchfully.jaws.domain.user.User;
 import com.switchfully.jaws.repositories.UserRepository;
 import com.switchfully.jaws.services.common.dto.AddressMapper;
@@ -9,7 +9,9 @@ import com.switchfully.jaws.services.common.dto.ContactInformationDto;
 import com.switchfully.jaws.services.common.dto.ContactInformationMapper;
 import com.switchfully.jaws.services.common.dto.CreateAddressDto;
 import com.switchfully.jaws.services.user.dto.*;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.List;

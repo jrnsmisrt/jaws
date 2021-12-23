@@ -1,8 +1,8 @@
 package com.switchfully.jaws.services.parkingLot.dtos;
 
-import com.switchfully.jaws.domain.Address;
-import com.switchfully.jaws.domain.ContactInformation;
 import com.switchfully.jaws.domain.Name;
+import com.switchfully.jaws.domain.common.Address;
+import com.switchfully.jaws.domain.common.ContactInformation;
 import com.switchfully.jaws.domain.parkingLot.ContactPerson;
 import com.switchfully.jaws.services.common.dto.AddressMapper;
 import com.switchfully.jaws.services.common.dto.ContactInformationMapper;

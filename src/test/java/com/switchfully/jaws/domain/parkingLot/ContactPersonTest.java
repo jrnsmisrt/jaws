@@ -1,8 +1,8 @@
 package com.switchfully.jaws.domain.parkingLot;
 
-import com.switchfully.jaws.domain.Address;
-import com.switchfully.jaws.domain.ContactInformation;
 import com.switchfully.jaws.domain.Name;
+import com.switchfully.jaws.domain.common.Address;
+import com.switchfully.jaws.domain.common.ContactInformation;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

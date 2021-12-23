@@ -9,11 +9,13 @@ import com.switchfully.jaws.services.parkingLot.dtos.ParkingLotDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 @ActiveProfiles("integration test")
+@AutoConfigureTestDatabase
 class ParkingLotControllerIntegrationTest {
 
     @Autowired
@@ -36,7 +38,7 @@ class ParkingLotControllerIntegrationTest {
         CreateAddressDto createAddressDto = new CreateAddressDto("contact person street", "contact person street number", "contact person city", "contact person country", 6666);
         CreateContactPersonDto createContactPersonDto = new CreateContactPersonDto("Lastname", "Firstname", contactInformationDto, createAddressDto);
         CreateAddressDto parkingAddressDto = new CreateAddressDto("parking street", "parking street number", "parking city", "parking country", 7777);
-        return new CreateParkingLotDto("Parking lot name", Category.UNDERGROUND_BUILDING.name(), 260, 2.99, createContactPersonDto, parkingAddressDto);
+        return new CreateParkingLotDto("Parking lot name1", Category.UNDERGROUND_BUILDING.name(), 260, 2.99, createContactPersonDto, parkingAddressDto);
     }
 
     private CreateParkingLotDto createCreateParkingLotDtoWithInvalidPhoneNumbers() {
@@ -44,7 +46,7 @@ class ParkingLotControllerIntegrationTest {
         CreateAddressDto createAddressDto = new CreateAddressDto("contact person street", "contact person street number", "contact person city", "contact person country", 6666);
         CreateContactPersonDto createContactPersonDto = new CreateContactPersonDto("Lastname", "Firstname", contactInformationDto, createAddressDto);
         CreateAddressDto parkingAddressDto = new CreateAddressDto("parking street", "parking street number", "parking city", "parking country", 7777);
-        return new CreateParkingLotDto("Parking lot name", Category.UNDERGROUND_BUILDING.name(), 260, 2.99, createContactPersonDto, parkingAddressDto);
+        return new CreateParkingLotDto("Parking lot name2", Category.UNDERGROUND_BUILDING.name(), 260, 2.99, createContactPersonDto, parkingAddressDto);
     }
 
     private ContactInformationDto createValidContactInformationDto() {

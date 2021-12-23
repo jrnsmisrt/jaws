@@ -1,11 +1,9 @@
 package com.switchfully.jaws.services.user.dto;
 
-import com.switchfully.jaws.domain.user.Address;
-import com.switchfully.jaws.domain.user.ContactInformation;
+import com.switchfully.jaws.domain.common.Address;
+import com.switchfully.jaws.domain.common.ContactInformation;
 import com.switchfully.jaws.domain.user.User;
-import com.switchfully.jaws.domain.User;
-import com.switchfully.jaws.services.common.dto.AddressMapper;
-import com.switchfully.jaws.services.common.dto.ContactInformationMapper;
+import com.switchfully.jaws.services.common.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

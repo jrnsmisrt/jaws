@@ -1,4 +1,4 @@
-package com.switchfully.jaws.domain.user;
+package com.switchfully.jaws.domain.common;
 
 import javax.persistence.*;
 import java.util.Objects;

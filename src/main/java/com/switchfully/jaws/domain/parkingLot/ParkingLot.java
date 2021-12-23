@@ -1,6 +1,7 @@
 package com.switchfully.jaws.domain.parkingLot;
 
-import com.switchfully.jaws.domain.Address;
+
+import com.switchfully.jaws.domain.common.Address;
 
 import javax.persistence.*;
 

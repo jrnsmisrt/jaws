@@ -1,6 +1,6 @@
 package com.switchfully.jaws.services.common.dto;
 
-import com.switchfully.jaws.domain.Address;
+import com.switchfully.jaws.domain.common.Address;
 import org.springframework.stereotype.Component;
 
 @Component
