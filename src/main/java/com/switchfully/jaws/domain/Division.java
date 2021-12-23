@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,24 +33,22 @@ public class Division {
 
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "parent_div_fk", referencedColumnName = "id_division")
-    @Column(name = "parent_division_id")
-    private List<Division> parentDivisionId;
+    @JoinColumn(name = "parent_div_fk")
+    private List<Division> subDivisions;
 
-    protected Division() {}
+    protected Division() {
+    }
 
     private Division(DivisionBuilder builder) {
         this.name = builder.name;
         this.originalName = builder.originalName;
         this.directorFullName = builder.directorFullName;
-        this.parentDivisionId = builder.parentDivisionId;
     }
 
     public static class DivisionBuilder {
         private String name;
         private String originalName;
         private String directorFullName;
-        private List<Division> parentDivisionId;
 
         public DivisionBuilder() {
         }
@@ -66,11 +65,6 @@ public class Division {
 
         public DivisionBuilder withDirectorFullName(String directorFullName) {
             this.directorFullName = directorFullName;
-            return this;
-        }
-
-        public DivisionBuilder withParentDivisionId(List<Division> parentDivisionId) {
-            this.parentDivisionId = parentDivisionId;
             return this;
         }
 
@@ -99,7 +93,7 @@ public class Division {
                 ", name='" + name + '\'' +
                 ", originalName='" + originalName + '\'' +
                 ", directorFullName='" + directorFullName + '\'' +
-                ", parentDivisionId=" + parentDivisionId +
+                ", parentDivisionId=" + subDivisions +
                 '}';
     }
 
@@ -119,8 +113,15 @@ public class Division {
         return directorFullName;
     }
 
-    public List<Division> getParentDivisionId() {
-        return parentDivisionId;
+    public List<Division> getSubDivisions() {
+        return subDivisions;
+    }
+
+    public void addSubdivision(Division division) {
+        if (getSubDivisions() == null) {
+            this.subDivisions = new ArrayList<>();
+        }
+        subDivisions.add(division);
     }
 
 
