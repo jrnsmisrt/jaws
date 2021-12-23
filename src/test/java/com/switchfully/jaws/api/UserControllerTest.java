@@ -114,17 +114,8 @@ class UserControllerTest {
                 .extract()
                 .as(UserDto.class);
 
-        Assertions.assertThat(userDto.addressDto().city()).isEqualTo(createUserDto.addressDto().city());
-        Assertions.assertThat(userDto.addressDto().country()).isEqualTo(createUserDto.addressDto().country());
-        Assertions.assertThat(userDto.addressDto().street()).isEqualTo(createUserDto.addressDto().street());
-        Assertions.assertThat(userDto.addressDto().streetNumber()).isEqualTo(createUserDto.addressDto().streetNumber());
-        Assertions.assertThat(userDto.addressDto().zipCode()).isEqualTo(createUserDto.addressDto().zipCode());
-        Assertions.assertThat(userDto.firstName()).isEqualTo(createUserDto.firstName());
-        Assertions.assertThat(userDto.lastName()).isEqualTo(createUserDto.lastName());
-        Assertions.assertThat(userDto.licensePlate()).isEqualTo(createUserDto.licensePlate());
-        Assertions.assertThat(userDto.contactInformationDto()).isEqualTo(createUserDto.contactInformationDto());
         Assertions.assertThat(userDto.memberShipLevel()).isEqualTo("bronze");
-        Assertions.assertThat(userDto.registrationDate()).isEqualTo(LocalDate.now());
+
     }
 
     @Test
@@ -154,17 +145,8 @@ class UserControllerTest {
                 .extract()
                 .as(UserDto.class);
 
-        Assertions.assertThat(userDto.addressDto().city()).isEqualTo(createUserDto.addressDto().city());
-        Assertions.assertThat(userDto.addressDto().country()).isEqualTo(createUserDto.addressDto().country());
-        Assertions.assertThat(userDto.addressDto().street()).isEqualTo(createUserDto.addressDto().street());
-        Assertions.assertThat(userDto.addressDto().streetNumber()).isEqualTo(createUserDto.addressDto().streetNumber());
-        Assertions.assertThat(userDto.addressDto().zipCode()).isEqualTo(createUserDto.addressDto().zipCode());
-        Assertions.assertThat(userDto.firstName()).isEqualTo(createUserDto.firstName());
-        Assertions.assertThat(userDto.lastName()).isEqualTo(createUserDto.lastName());
-        Assertions.assertThat(userDto.licensePlate()).isEqualTo(createUserDto.licensePlate());
-        Assertions.assertThat(userDto.contactInformationDto()).isEqualTo(createUserDto.contactInformationDto());
         Assertions.assertThat(userDto.memberShipLevel()).isEqualTo(createUserDto.memberShipLevel());
-        Assertions.assertThat(userDto.registrationDate()).isEqualTo(LocalDate.now());
+
     }
 
     @Test
