@@ -30,6 +30,7 @@ class UserControllerTest {
     private UserController userController;
     private final UserMapper userMapper = new UserMapper(new AddressMapper(), new ContactInformationMapper());
     private final UserRepository userRepository;
+    private final AddressMapper addressMapper = new AddressMapper();
 
     @Value("${server.port}")
     private int port;
@@ -98,7 +99,7 @@ class UserControllerTest {
 
 
         User userAlreadyInRepository = new User.UserBuilder()
-                .withAddress(userMapper.toAddress(createAddressDto2))
+                .withAddress(addressMapper.mapCreateDtoToEntity(createAddressDto2))
                 .withContactInformation(contactInformation2)
                 .withFirstName(createUserDto2.firstName())
                 .withLastName(createUserDto2.lastName())
