@@ -24,20 +24,21 @@ public class UserService {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
     }
+
     public List<User> getAllUser() {
         return userRepository.findAll();
     }
+
     public UserDto addUser(CreateUserDto createUserDto) {
         checkIfValidEmail(createUserDto.contactInformationDto().emailAddress());
         User user = userMapper.toUser(createUserDto);
         if (getAllUser().contains(user)) {
-            throw new ObjectAlreadyExist("User" + createUserDto.toString());
+            throw new ObjectAlreadyExist("User" + createUserDto);
         }
 
         User userOut = userRepository.save(user);
-        UserDto userDto = userMapper.toUserDto(userOut);
 
-        return userDto;
+        return userMapper.toUserDto(userOut);
     }
 
     public String getAllMembersOverview() {
