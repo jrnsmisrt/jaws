@@ -16,10 +16,6 @@ import org.springframework.test.context.ActiveProfiles;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import java.util.List;
-
-import static java.lang.String.format;
-
 @DataJpaTest
 @ActiveProfiles("test")
 public class DivisionRepositoryTest {
