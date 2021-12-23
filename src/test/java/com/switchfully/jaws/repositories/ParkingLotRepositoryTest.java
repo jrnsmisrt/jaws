@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.List;
+
 @DataJpaTest
 class ParkingLotRepositoryTest {
 
@@ -23,6 +25,19 @@ class ParkingLotRepositoryTest {
         ParkingLot actual = parkingLotRepository.getById(expected.getId());
 
         Assertions.assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void whenFindAll_thenItsValid(){
+        List<ParkingLot> expected = parkingLotRepository.findAll();
+        Assertions.assertThat(expected != null);
+    }
+
+    @Test
+    void whenFindAll_thenReturnAllEntities(){
+        ParkingLot parkingLot = createValidParkingLot();
+        List<ParkingLot> expected = parkingLotRepository.findAll();
+        Assertions.assertThat(expected.contains(parkingLot));
     }
 
     private ParkingLot createValidParkingLot() {
@@ -50,5 +65,8 @@ class ParkingLotRepositoryTest {
 
         return new ParkingLot("Parking lot", Category.UNDERGROUND_BUILDING, 250, contactPerson, parkingAddress, 2.99);
     }
+
+
+
 
 }

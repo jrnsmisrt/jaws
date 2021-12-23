@@ -13,6 +13,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.List;
+
 @SpringBootTest
 @ActiveProfiles("integration test")
 @AutoConfigureTestDatabase
@@ -32,6 +34,14 @@ class ParkingLotControllerIntegrationTest {
     void createParkingLot_givenIncorrectDtoWithNullPhoneNumbers_thenThrowsIllegalArgumentException() {
         Assertions.assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> parkingLotController.createParkingLot(createCreateParkingLotDtoWithInvalidPhoneNumbers()));
     }
+
+//    @Test
+//    void givenIncorrectDtoWithNullPhoneNumbers_WhenGetAll_thenAllParkingLotsAreReturned(){
+//        CreateParkingLotDto createParkingLotDto = createValidCreateParkingLotDto();
+//        ParkingLotDto expectedParkingLotDto = parkingLotController.createParkingLot(createParkingLotDto);
+//        List<ParkingLotDto> parkingLotDtoList = parkingLotController.getAllParkingLots();
+//        Assertions.assertThat(parkingLotDtoList.contains(expectedParkingLotDto));
+//    }
 
     private CreateParkingLotDto createValidCreateParkingLotDto() {
         ContactInformationDto contactInformationDto = createValidContactInformationDto();
