@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @Component
 public class DivisionMapper {
 
-    private final DivisionRepository divisionRepository;
+    private final DivisionRepository divisionRepository; //fixme maye put in service
 
     @Autowired
     public DivisionMapper(DivisionRepository divisionRepository) {

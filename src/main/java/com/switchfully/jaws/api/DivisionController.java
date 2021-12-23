@@ -29,8 +29,6 @@ public class DivisionController {
         return divisionService.createDivision(createDivisionDto);
     }
 
-
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<DivisionDto> getAllDivisions(){

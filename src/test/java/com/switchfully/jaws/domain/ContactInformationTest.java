@@ -1,7 +1,7 @@
 package com.switchfully.jaws.domain;
 
+import com.switchfully.jaws.domain.common.ContactInformation;
 import com.switchfully.jaws.exceptions.EmailAddressIsInvalidException;
-import com.switchfully.jaws.domain.user.ContactInformation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

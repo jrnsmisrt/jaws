@@ -2,11 +2,13 @@ package com.switchfully.jaws.services.division.dtos;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.switchfully.jaws.domain.Division;
 
 import java.util.List;
 import java.util.Optional;
 
+@JsonPropertyOrder({"division_id", "parent_division_id", "name", "original_name", "director_fullname", "subdivisions"})
 public class DivisionDto{
     @JsonProperty("division_id")
     private Long divisionId;
@@ -17,8 +19,18 @@ public class DivisionDto{
     private final String directorFullName;
     @JsonProperty("parent_division_id")
     private Optional<Long> parentDivisionId;
-    @JsonProperty
+    @JsonProperty("subdivisions")
     private final List<Division>  subDivisions;
+
+    private DivisionDto(Long divisionId, String name, String originalName, String directorFullName,
+                        Optional<Long> parentDivisionId, List<Division> subDivisions) {
+        this.divisionId = divisionId;
+        this.name = name;
+        this.originalName = originalName;
+        this.directorFullName = directorFullName;
+        this.parentDivisionId = parentDivisionId;
+        this.subDivisions = subDivisions;
+    }
 
     private DivisionDto (DivisionDtoBuilder builder) {
         this.divisionId = builder.divisionId;
@@ -75,7 +87,27 @@ public class DivisionDto{
         }
     }
 
+    public Long getDivisionId() {
+        return divisionId;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public String getOriginalName() {
+        return originalName;
+    }
+
+    public String getDirectorFullName() {
+        return directorFullName;
+    }
+
+    public Optional<Long> getParentDivisionId() {
+        return parentDivisionId;
+    }
+
+    public List<Division> getSubDivisions() {
+        return subDivisions;
     }
 }
