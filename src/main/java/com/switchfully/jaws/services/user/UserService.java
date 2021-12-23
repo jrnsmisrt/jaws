@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -42,7 +44,6 @@ public class UserService {
     }
 
     public String getAllMembersOverview() {
-        //check if user role = manager
         StringBuilder membersoverview = new StringBuilder();
         String overview = "Overview of all members: \n";
 
@@ -58,6 +59,7 @@ public class UserService {
         }
         return overview + membersoverview;
     }
+
 
     private void checkIfValidEmail(String email) {
         if (!isValidEmailAddress(email)) {

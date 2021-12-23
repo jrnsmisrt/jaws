@@ -30,6 +30,7 @@ public class UserMapper {
                 .withFirstName(createUserDto.firstName())
                 .withLastName(createUserDto.lastName())
                 .withLicensePlate(createUserDto.licensePlate())
+                .withMemberShipLevelName(createUserDto.memberShipLevel())
                 .build();
     }
 

@@ -6,5 +6,5 @@ import com.switchfully.jaws.services.common.dto.ContactInformationDto;
 import java.time.LocalDate;
 
 public record UserDto(Long id, String firstName, String lastName, String licensePlate, AddressDto addressDto,
-                      ContactInformationDto contactInformationDto, LocalDate registrationDate) {
+                      ContactInformationDto contactInformationDto, LocalDate registrationDate, String memberShipLevel) {
 }

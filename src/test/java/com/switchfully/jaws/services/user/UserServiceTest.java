@@ -2,6 +2,9 @@ package com.switchfully.jaws.services.user;
 
 import com.switchfully.jaws.domain.common.Address;
 import com.switchfully.jaws.domain.common.ContactInformation;
+import com.switchfully.jaws.domain.user.Address;
+import com.switchfully.jaws.domain.user.ContactInformation;
+import com.switchfully.jaws.domain.user.MemberShipLevel;
 import com.switchfully.jaws.domain.user.User;
 import com.switchfully.jaws.repositories.UserRepository;
 import com.switchfully.jaws.services.common.dto.AddressMapper;
@@ -96,5 +99,12 @@ class UserServiceTest {
         Mockito.when(userRepository.findAll()).thenReturn(expectedUsers);
         List<User> actualUsers = userService.getAllUser();
         Assertions.assertThat(actualUsers).isEqualTo(expectedUsers);
+    }
+
+    @Test
+    void whenSettingMemberShipLevel_AssertThatMemberHasSaidMemberShipLevel(){
+        testUser2.setMemberShipLevel(MemberShipLevel.GOLD);
+
+        Assertions.assertThat(testUser2.getMemberShipLevel()).isEqualTo(MemberShipLevel.GOLD);
     }
 }
