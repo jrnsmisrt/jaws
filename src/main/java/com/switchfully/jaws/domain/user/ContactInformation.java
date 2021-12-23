@@ -1,6 +1,6 @@
 package com.switchfully.jaws.domain.user;
 
-import com.switchfully.jaws.Exceptions.EmailAddressIsInvalidException;
+import com.switchfully.jaws.exceptions.EmailAddressIsInvalidException;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;

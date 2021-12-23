@@ -53,7 +53,6 @@ public class DivisionService {
                 .collect(Collectors.toList());
     }
 
-
     private boolean nameDoesNotExists(CreateDivisionDto createDivisionDto) {
         return divisionRepository.findAll().stream()
                 .map(Division::getName)
