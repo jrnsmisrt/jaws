@@ -29,7 +29,7 @@ public class User {
     @Column(name = "registration_date")
     private LocalDate registrationDate;
 
-    @Column(name = "member_ship_level")
+    @Column(name="member_ship_level")
     private String memberShipLevelName;
 
 
@@ -81,10 +81,6 @@ public class User {
 
     public String getMemberShipLevelName() {
         return memberShipLevelName;
-    }
-
-    public void setMemberShipLevelName(String memberShipLevelName) {
-        this.memberShipLevelName = memberShipLevelName;
     }
 
     public Long getId() {
