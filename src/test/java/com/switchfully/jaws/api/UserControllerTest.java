@@ -10,7 +10,6 @@ import com.switchfully.jaws.services.user.dto.UserMapper;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @ActiveProfiles("test")
@@ -35,12 +35,6 @@ class UserControllerTest {
     UserControllerTest(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
-    @BeforeEach
-    void setUp() {
-
-    }
-
 
     @Test
     void givenCorrectInformation_RegisterMemberWorks() {
@@ -162,7 +156,7 @@ class UserControllerTest {
     }
 
     @Test
-    void givenAlreadyExistingUserAssInput_RegisterMemberWorks_GivesException() {
+    void givenAlreadyExistingUserAsInput_RegisterMemberWorks_GivesException() {
         CreateAddressDto createAddressDto = new CreateAddressDto("husestraat", "2", "Gent", "Belgium", 9000);
         ContactInformation contactInformation = new ContactInformation.ContactInfoBuilder()
                 .withCellPhoneNumber("0458235")

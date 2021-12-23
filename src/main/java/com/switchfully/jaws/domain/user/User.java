@@ -34,19 +34,6 @@ public class User {
     protected User() {
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(contactInformation, user.contactInformation);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(contactInformation);
-    }
-
     private User(UserBuilder builder) {
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;
@@ -125,5 +112,16 @@ public class User {
         return contactInformation;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return contactInformation.equals(user.contactInformation);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(contactInformation);
+    }
 }

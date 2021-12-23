@@ -24,10 +24,11 @@ public class UserService {
     public List<User> getAllUser() {
         return userRepository.findAll();
     }
+
     public UserDto addUser(CreateUserDto createUserDto) {
         User user = userMapper.toUser(createUserDto);
         if (getAllUser().contains(user)) {
-            throw new ObjectAlreadyExist("User" + createUserDto.toString());
+            throw new ObjectAlreadyExist("User" + createUserDto);
         }
 
         User userOut = userRepository.save(user);
