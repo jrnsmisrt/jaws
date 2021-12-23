@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Transactional
 public class ParkingLotService {
@@ -33,4 +36,9 @@ public class ParkingLotService {
         return parkingLotMapper.mapEntityToDto(parkingLotRepository.getById(id));
     }
 
+    public List<ParkingLotDto> getAllParkingLots() {
+        return parkingLotRepository.findAll().stream()
+                .map(parkingLot -> parkingLotMapper.mapEntityToDto(parkingLot))
+                .collect(Collectors.toList());
+    }
 }

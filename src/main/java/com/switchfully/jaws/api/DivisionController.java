@@ -5,11 +5,10 @@ import com.switchfully.jaws.services.division.dtos.CreateDivisionDto;
 import com.switchfully.jaws.services.division.dtos.DivisionDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -28,5 +27,11 @@ public class DivisionController {
     @ResponseStatus(HttpStatus.CREATED)
     public DivisionDto createDivision(@RequestBody CreateDivisionDto createDivisionDTO) {
         return divisionService.createDivision(createDivisionDTO);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<DivisionDto> getAllDivisions(){
+        return divisionService.getAllDivisions();
     }
 }
