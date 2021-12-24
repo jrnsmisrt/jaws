@@ -20,6 +20,6 @@ public class MockSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/public/*");
+        web.ignoring().antMatchers("/public/**", "/error");
     }
 }

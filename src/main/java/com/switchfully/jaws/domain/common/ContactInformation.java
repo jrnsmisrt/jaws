@@ -84,18 +84,18 @@ public final class ContactInformation {
             return result;
         }
 
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            ContactInformation that = (ContactInformation) o;
-            return Objects.equals(emailAddress, that.emailAddress);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(emailAddress);
-        }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ContactInformation that = (ContactInformation) o;
+        return Objects.equals(emailAddress, that.emailAddress);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(emailAddress);
+    }
 }

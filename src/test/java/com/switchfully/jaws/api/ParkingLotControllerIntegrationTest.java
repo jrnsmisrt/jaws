@@ -25,8 +25,9 @@ class ParkingLotControllerIntegrationTest {
     private ParkingLotController parkingLotController;
 
     @Test
+    @WithMockUser(authorities = "CREATE_PARKING_LOT")
     void createParkingLot_givenCorrectDto_thenParkingLotIsAdded() {
-        ParkingLotDto expected = parkingLotController.createParkingLot(createValidCreateParkingLotDto());
+        ParkingLotDto expected = parkingLotController.createParkingLot(createValidCreateParkingLotDto("name3"));
         ParkingLotDto actual = parkingLotController.getParkingLotById(expected.id());
         Assertions.assertThat(actual).isEqualTo(expected);
     }
@@ -40,18 +41,18 @@ class ParkingLotControllerIntegrationTest {
     @Test
     @WithMockUser(authorities = {"GET_PARKING_LOT_OVERVIEW", "CREATE_PARKING_LOT"})
     void givenIncorrectDtoWithNullPhoneNumbers_WhenGetAll_thenAllParkingLotsAreReturned(){
-        CreateParkingLotDto createParkingLotDto = createValidCreateParkingLotDto();
+        CreateParkingLotDto createParkingLotDto = createValidCreateParkingLotDto("name5");
         ParkingLotDto expectedParkingLotDto = parkingLotController.createParkingLot(createParkingLotDto);
         List<ParkingLotDto> parkingLotDtoList = parkingLotController.getAllParkingLots();
         Assertions.assertThat(parkingLotDtoList.contains(expectedParkingLotDto));
     }
 
-    private CreateParkingLotDto createValidCreateParkingLotDto() {
+    private CreateParkingLotDto createValidCreateParkingLotDto(String name) {
         ContactInformationDto contactInformationDto = createValidContactInformationDto();
         CreateAddressDto createAddressDto = new CreateAddressDto("contact person street", "contact person street number", "contact person city", "contact person country", 6666);
         CreateContactPersonDto createContactPersonDto = new CreateContactPersonDto("Lastname", "Firstname", contactInformationDto, createAddressDto);
         CreateAddressDto parkingAddressDto = new CreateAddressDto("parking street", "parking street number", "parking city", "parking country", 7777);
-        return new CreateParkingLotDto("Parking lot name1", Category.UNDERGROUND_BUILDING.name(), 260, 2.99, createContactPersonDto, parkingAddressDto);
+        return new CreateParkingLotDto(name, Category.UNDERGROUND_BUILDING.name(), 260, 2.99, createContactPersonDto, parkingAddressDto);
     }
 
     private CreateParkingLotDto createCreateParkingLotDtoWithInvalidPhoneNumbers() {

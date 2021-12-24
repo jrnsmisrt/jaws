@@ -1,5 +1,6 @@
 package com.switchfully.jaws.api;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.switchfully.jaws.services.division.dtos.CreateDivisionDto;
 import com.switchfully.jaws.services.division.dtos.DivisionDto;
 import io.restassured.RestAssured;
@@ -9,14 +10,22 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
-import java.util.Optional;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@AutoConfigureMockMvc
 @ActiveProfiles("test")
 public class DivisionControllerTest {
     private CreateDivisionDto createDivisionDto;
@@ -27,6 +36,8 @@ public class DivisionControllerTest {
     @Value("${server.port}")
     private int port;
 
+    @Autowired
+    private MockMvc mockMvc;
 
     @BeforeEach
     public void setup() {
@@ -74,41 +85,49 @@ public class DivisionControllerTest {
 
     @Test
     @DisplayName("checking to see if the Dto gets filled in correctly")
+    @WithMockUser(authorities = "CREATE_DIVISION")
     void givenCreateDivisionDto_doFieldsDivisionDtoGetFilledIn() {
 
-        DivisionDto divisionDto = postCreateDivision(createDivisionDtoAlt)
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.CREATED.value())
-                .extract()
-                .as(DivisionDto.class);
+        DivisionDto divisionDto = null;
+        try {
+            ResultActions resultActions = mockMvc.perform(post("/divisions").contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsBytes(createDivisionDtoAlt))).andExpect(status().isCreated()).andDo(print());
+            String stringResponse = resultActions.andReturn().getResponse().getContentAsString();
+            divisionDto = new ObjectMapper().readValue(stringResponse, DivisionDto.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         Assertions.assertEquals(divisionDto.getName(),createDivisionDtoAlt.getName());
         Assertions.assertEquals(divisionDto.getOriginalName(),createDivisionDtoAlt.getOriginalName());
         Assertions.assertEquals(divisionDto.getDirectorFullName(),createDivisionDtoAlt.getDirectorFullName());
-        Assertions.assertEquals(divisionDto.getParentDivisionId(), Optional.empty());
+        Assertions.assertEquals(divisionDto.getParentDivisionId(), null);
     }
 
     @Test
+    @WithMockUser(authorities = "CREATE_DIVISION")
     @DisplayName("when creating divisions with same name, get back BAD request")
     void givenCreateDivisionDtoWithSameName_thenBadRequest() {
-        postCreateDivision(createDivisionDto);
 
-        postCreateDivision(createDivisionDtoSameName)
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.BAD_REQUEST.value());
+        try {
+            mockMvc.perform(post("/divisions").contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsBytes(createDivisionDto)));
+            mockMvc.perform(post("/divisions").contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsBytes(createDivisionDtoSameName))).andExpect(status().isBadRequest()).andDo(print());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Test
+    @WithMockUser(authorities = "CREATE_DIVISION")
     @DisplayName("when creating divisions with same name, get back CREATED request")
     void givenCreateDivisionDtoWithDifferentName_thenCreatedRequest() {
-        postCreateDivision(createDivisionDto);
-
-        postCreateDivision(createDivisionDifferentNameDto)
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.CREATED.value());
+        try {
+            mockMvc.perform(post("/divisions").contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsBytes(createDivisionDto)));
+            mockMvc.perform(post("/divisions").contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsBytes(createDivisionDifferentNameDto))).andExpect(status().isCreated()).andDo(print());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

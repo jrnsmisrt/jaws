@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@ActiveProfiles("test")
 class DivisionServiceTest {
 
     private Division division;
@@ -28,13 +29,10 @@ class DivisionServiceTest {
     private DivisionRepository divisionRepository;
     private DivisionService divisionServiceMock;
 
-    private DivisionMapper divisionMapperMock;
-
     @BeforeEach
     void setUp() {
         divisionRepository = mock(DivisionRepository.class);
-        divisionMapperMock = mock(DivisionMapper.class);
-        divisionServiceMock = new DivisionService(divisionMapperMock, divisionRepository);
+        divisionServiceMock = new DivisionService(new DivisionMapper(divisionRepository), divisionRepository);
 
         division = new Division.DivisionBuilder()
                 .withName("Monkey")
@@ -48,22 +46,25 @@ class DivisionServiceTest {
                 .withOriginalName("Jack Sparrow")
                 .build();
 
-//        createDivisionDto = new CreateDivisionDto("Monkey", "Bossman", "Number One", null);
+        createDivisionDto = new CreateDivisionDto.CreateDivisionDtoBuilder()
+                .withName("Monkey")
+                .withParentDivisionId(null)
+                .withOriginalName("original name")
+                .withDirectorFullName("COucoucouc")
+                .build();
     }
 
     @Test
     void givenDivisionRepository_whenDivisionSavedToDb_willReturnDivision() {
-        //Mockito.when(divisionRepository.save(division)).thenReturn(division);
-        divisionRepository.save(division);
+        Mockito.when(divisionRepository.save(division)).thenReturn(division);
         DivisionDto divisionDto = divisionServiceMock.createDivision(createDivisionDto);
         Assertions.assertThat(divisionDto.getName().equalsIgnoreCase(division.getName()));
-
     }
 
     @Test
     void givenDivisionService_whenDivisionSavedToDb_thenVerifyRepositorySavesEntity() {
         divisionServiceMock.createDivision(createDivisionDto);
-        Mockito.verify(divisionRepository).save(divisionMapperMock.mapDivisionDtoToDivision(createDivisionDto));
+        Mockito.verify(divisionRepository).save(new DivisionMapper(divisionRepository).mapDivisionDtoToDivision(createDivisionDto));
     }
 
     @Test

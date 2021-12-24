@@ -10,7 +10,7 @@ import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
 
 @SpringBootApplication
-public class  JawsApplication {
+public class JawsApplication {
     public static void main(String[] args) {
         SpringApplication.run(JawsApplication.class, args);
     }

@@ -12,15 +12,19 @@ import java.util.Optional;
 public class DivisionDto{
     @JsonProperty("division_id")
     private Long divisionId;
-    private final String name;
+    private String name;
     @JsonProperty("original_name")
-    private final String originalName;
+    private String originalName;
     @JsonProperty("director_fullname")
-    private final String directorFullName;
+    private String directorFullName;
     @JsonProperty("parent_division_id")
     private Optional<Long> parentDivisionId;
     @JsonProperty("subdivisions")
-    private final List<Division>  subDivisions;
+    private List<Division>  subDivisions;
+
+    public DivisionDto() {
+
+    }
 
     private DivisionDto(Long divisionId, String name, String originalName, String directorFullName,
                         Optional<Long> parentDivisionId, List<Division> subDivisions) {

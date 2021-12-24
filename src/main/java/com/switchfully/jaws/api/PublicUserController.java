@@ -7,6 +7,7 @@ import com.switchfully.jaws.services.user.UserService;
 import com.switchfully.jaws.services.user.dto.CreateUserDto;
 import com.switchfully.jaws.services.user.dto.UserDto;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
