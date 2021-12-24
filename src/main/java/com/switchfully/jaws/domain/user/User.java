@@ -1,11 +1,15 @@
 package com.switchfully.jaws.domain.user;
 
+import com.switchfully.jaws.Exceptions.InvalidMemberShipLevelInputException;
+
 import com.switchfully.jaws.domain.common.Address;
 import com.switchfully.jaws.domain.common.ContactInformation;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 
 @Entity
 @Table(name = "users")
@@ -27,12 +31,18 @@ public class User {
     @Column(name = "registration_date")
     private LocalDate registrationDate;
 
+    @Column(name = "member_ship_level")
+    private String memberShipLevelName;
+
+    @Embedded
+    private ContactInformation contactInformation;
+
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "fk_address_id", nullable = false)
     private Address address;
 
-    @Embedded
-    private ContactInformation contactInformation;
+    @Transient
+    private MemberShipLevel memberShipLevel;
 
     protected User() {
     }
@@ -44,7 +54,21 @@ public class User {
         this.address = builder.address;
         this.licensePlate = builder.licensePlate;
         this.registrationDate = LocalDate.now();
+        this.memberShipLevel = builder.memberShipLevel;
+        this.memberShipLevelName = builder.memberShipLevelName;
 
+    }
+
+    public MemberShipLevel getMemberShipLevel() {
+        return memberShipLevel;
+    }
+
+    public void setMemberShipLevel(MemberShipLevel memberShipLevel) {
+        this.memberShipLevel = memberShipLevel;
+    }
+
+    public String getMemberShipLevelName() {
+        return memberShipLevelName;
     }
 
     public Long getId() {
@@ -73,6 +97,8 @@ public class User {
         private String licensePlate;
         private Address address;
         private ContactInformation contactInformation;
+        private String memberShipLevelName = "bronze";
+        private MemberShipLevel memberShipLevel = MemberShipLevel.BRONZE;
 
         public UserBuilder() {
         }
@@ -99,6 +125,26 @@ public class User {
 
         public UserBuilder withContactInformation(ContactInformation contactInformation) {
             this.contactInformation = contactInformation;
+            return this;
+        }
+
+        public UserBuilder withMemberShipLevelName(String memberShipLevelName) {
+            if (memberShipLevelName == null) {
+                return this;
+            }
+
+            Optional<MemberShipLevel> optionalLevel = Arrays.stream(MemberShipLevel.values())
+                    .toList()
+                    .stream()
+                    .filter(level -> level.getMemberShipLevelName().equals(memberShipLevelName))
+                    .findFirst();
+
+
+            if (optionalLevel.isPresent()) {
+                this.memberShipLevelName = optionalLevel.get().getMemberShipLevelName();
+                this.memberShipLevel = optionalLevel.get();
+            } else throw new InvalidMemberShipLevelInputException(memberShipLevelName);
+
             return this;
         }
 

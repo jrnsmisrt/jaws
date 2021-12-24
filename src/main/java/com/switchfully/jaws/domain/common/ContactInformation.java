@@ -10,13 +10,13 @@ import java.util.Objects;
 
 @Embeddable
 public final class ContactInformation {
-    @Column(name = "cellphone_number")
+    @Column(name = "cellphone_number",nullable = false)
     private String cellphoneNumber;
 
     @Column(name = "home_number")
     private String homePhoneNumber;
 
-    @Column(name = "email")
+    @Column(name = "email",nullable = false)
     private String emailAddress;
 
     protected ContactInformation() {}
@@ -58,7 +58,7 @@ public final class ContactInformation {
         }
 
         public ContactInfoBuilder withEmailAddress(String emailAddress) {
-            setEmail(emailAddress);
+            this.emailAddress = emailAddress;
             return this;
         }
 

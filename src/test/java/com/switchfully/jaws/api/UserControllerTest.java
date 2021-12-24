@@ -3,6 +3,7 @@ package com.switchfully.jaws.api;
 import com.switchfully.jaws.domain.common.ContactInformation;
 import com.switchfully.jaws.domain.user.User;
 import com.switchfully.jaws.repositories.UserRepository;
+import com.switchfully.jaws.services.user.UserService;
 import com.switchfully.jaws.services.common.dto.AddressMapper;
 import com.switchfully.jaws.services.common.dto.ContactInformationDto;
 import com.switchfully.jaws.services.common.dto.ContactInformationMapper;
@@ -28,6 +29,7 @@ import java.time.LocalDate;
 class UserControllerTest {
 
     private UserController userController;
+    private UserService userService;
     private final UserMapper userMapper = new UserMapper(new AddressMapper(), new ContactInformationMapper());
     private final UserRepository userRepository;
     private final AddressMapper addressMapper = new AddressMapper();
@@ -36,8 +38,9 @@ class UserControllerTest {
     private int port;
 
     @Autowired
-    UserControllerTest(UserRepository userRepository) {
+    UserControllerTest(UserRepository userRepository, UserService userService) {
         this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @BeforeEach
@@ -56,7 +59,7 @@ class UserControllerTest {
 
         ContactInformationDto contactInformationDto = new ContactInformationMapper().mapEntityToDto(contactInformation);
 
-        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, contactInformationDto);
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, contactInformationDto,"gold");
 
         UserDto userDto = RestAssured
                 .given()
@@ -81,7 +84,70 @@ class UserControllerTest {
         Assertions.assertThat(userDto.lastName()).isEqualTo(createUserDto.lastName());
         Assertions.assertThat(userDto.licensePlate()).isEqualTo(createUserDto.licensePlate());
         Assertions.assertThat(userDto.contactInformationDto()).isEqualTo(createUserDto.contactInformationDto());
+        Assertions.assertThat(userDto.memberShipLevel()).isEqualTo((createUserDto.memberShipLevel()));
         Assertions.assertThat(userDto.registrationDate()).isEqualTo(LocalDate.now());
+    }
+
+    @Test
+    void givenCorrectInformation_RegisterMemberWorksWithMemberShipLevelNull() {
+        CreateAddressDto createAddressDto = new CreateAddressDto("husestraat", "22", "Gent", "Belgium", 9000);
+        ContactInformation contactInformation = new ContactInformation.ContactInfoBuilder()
+                .withCellPhoneNumber("0458235")
+                .withEmailAddress("smis@outlook.com")
+                .withHomePhoneNumber("5405465")
+                .build();
+
+        ContactInformationDto contactInformationDto = new ContactInformationMapper().mapEntityToDto(contactInformation);
+
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, contactInformationDto,null);
+
+        UserDto userDto = RestAssured
+                .given()
+                .body(createUserDto)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .when()
+                .port(port)
+                .post("/users")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .as(UserDto.class);
+
+        Assertions.assertThat(userDto.memberShipLevel()).isEqualTo("bronze");
+
+    }
+
+    @Test
+    void givenCorrectInformation_RegisterMemberWorksWithMemberShipLevelSilver() {
+        CreateAddressDto createAddressDto = new CreateAddressDto("husestraat", "22", "Gent", "Belgium", 9000);
+        ContactInformation contactInformation = new ContactInformation.ContactInfoBuilder()
+                .withCellPhoneNumber("0458235")
+                .withEmailAddress("Jrs@outlook.com")
+                .withHomePhoneNumber("5405465")
+                .build();
+
+        ContactInformationDto contactInformationDto = new ContactInformationMapper().mapEntityToDto(contactInformation);
+
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, contactInformationDto,"silver");
+
+        UserDto userDto = RestAssured
+                .given()
+                .body(createUserDto)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .when()
+                .port(port)
+                .post("/users")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .as(UserDto.class);
+
+        Assertions.assertThat(userDto.memberShipLevel()).isEqualTo(createUserDto.memberShipLevel());
+
     }
 
     @Test
@@ -95,7 +161,7 @@ class UserControllerTest {
 
         ContactInformationDto contactInformationDto2 = new ContactInformationMapper().mapEntityToDto(contactInformation2);
 
-        CreateUserDto createUserDto2 = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto2, contactInformationDto2);
+        CreateUserDto createUserDto2 = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto2, contactInformationDto2,null);
 
 
         User userAlreadyInRepository = new User.UserBuilder()
@@ -116,7 +182,7 @@ class UserControllerTest {
 
         ContactInformationDto contactInformationDto = new ContactInformationMapper().mapEntityToDto(contactInformation);
 
-        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto2, contactInformationDto);
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto2, contactInformationDto,null);
 
 
         UserDto userDto = RestAssured
@@ -154,10 +220,34 @@ class UserControllerTest {
                 .withHomePhoneNumber("5405465")
                 .build();
 
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, userMapper.toContactInformationDto(contactInformation), "null");
+
+
+        RestAssured
+                .given()
+                .body(createUserDto)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .when()
+                .port(port)
+                .post("/users")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void givenEmailNull_RegisterMemberWorks_GivesException() {
+        CreateAddressDto createAddressDto = new CreateAddressDto("husestraat", "null", "Gent", "Belgium", 9000);
+        ContactInformation contactInformation = new ContactInformation.ContactInfoBuilder()
+                .withCellPhoneNumber("0458235")
+                .withEmailAddress(null)
+                .withHomePhoneNumber("5405465")
+                .build();
+
         ContactInformationDto contactInformationDto = new ContactInformationMapper().mapEntityToDto(contactInformation);
 
-        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, contactInformationDto);
-
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, contactInformationDto,null);
 
         RestAssured
                 .given()
@@ -183,7 +273,7 @@ class UserControllerTest {
 
         ContactInformationDto contactInformationDto = new ContactInformationMapper().mapEntityToDto(contactInformation);
 
-        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, contactInformationDto);
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, contactInformationDto,null);
 
         userRepository.save(userMapper.toUser(createUserDto));
 
@@ -211,7 +301,7 @@ class UserControllerTest {
 
         ContactInformationDto contactInformationDto = new ContactInformationMapper().mapEntityToDto(contactInformation);
 
-        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", null, contactInformationDto);
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", null, contactInformationDto,null);
 
 
         RestAssured
@@ -229,56 +319,64 @@ class UserControllerTest {
 
     @Test
     void givenBadEmailAddress_RegisterMemberWorks_GivesException() {
-//        CreateAddressDto createAddressDto = new CreateAddressDto("husestraat", null, "Gent", "Belgium", 9000);
-//        ContactInformation contactInformation = new ContactInformation.ContactInfoBuilder()
-//                .withCellPhoneNumber("0458235")
-//                .withEmailAddress("Jeroen.smissaertoutlook.com")
-//                .withHomePhoneNumber("5405465")
-//                .build();
-//
-//        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, userMapper.toContactInformationDto(contactInformation));
-//
-//
-//        RestAssured
-//                .given()
-//                .body(createUserDto)
-//                .accept(ContentType.JSON)
-//                .contentType(ContentType.JSON)
-//                .when()
-//                .port(port)
-//                .post("/users")
-//                .then()
-//                .assertThat()
-//                .statusCode(HttpStatus.BAD_REQUEST.value());
-    }
-    // Add user test for email on User class
+        CreateAddressDto createAddressDto = new CreateAddressDto("husestraat", null, "Gent", "Belgium", 9000);
+        ContactInformation contactInformation = new ContactInformation.ContactInfoBuilder()
+                .withCellPhoneNumber("0458235")
+                .withEmailAddress("Jeroen.smissaertoutlook.com")
+                .withHomePhoneNumber("5405465")
+                .build();
 
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, userMapper.toContactInformationDto(contactInformation),null);
+
+
+        RestAssured
+                .given()
+                .body(createUserDto)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .when()
+                .port(port)
+                .post("/users")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
 
     @Test
-    void givenUserDto_WhenGetAllMembersOverviewIsCalled_OverviewContainsSaidUserDto(){
-//        CreateAddressDto createAddressDto = new CreateAddressDto("husestraat", "22", "Gent", "Belgium", 9000);
-//        ContactInformation contactInformation = new ContactInformation.ContactInfoBuilder()
-//                .withCellPhoneNumber("0458235")
-//                .withEmailAddress("Jeroen.smissaert@outlook.com")
-//                .withHomePhoneNumber("5405465")
-//                .build();
-//
-//        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, userMapper.toContactInformationDto(contactInformation));
-//
-//        UserDto userDto = RestAssured
-//                .given()
-//                .body(createUserDto)
-//                .accept(ContentType.JSON)
-//                .contentType(ContentType.JSON)
-//                .when()
-//                .port(port)
-//                .post("/users")
-//                .then()
-//                .assertThat()
-//                .statusCode(HttpStatus.CREATED.value())
-//                .extract()
-//                .as(UserDto.class);
-//
-//        Assertions.assertThat(userController.getAllMembers()).contains("Jeroen");
+    void givenUserDto_WhenGetAllMembersOverviewIsCalled_OverviewContainsSaidUserDto() {
+        CreateAddressDto createAddressDto = new CreateAddressDto("husestraat", "22", "Gent", "Belgium", 9000);
+        ContactInformation contactInformation = new ContactInformation.ContactInfoBuilder()
+                .withCellPhoneNumber("0458235")
+                .withEmailAddress("Jeroen@smissaert.com")
+                .withHomePhoneNumber("5405465")
+                .build();
+
+        CreateUserDto createUserDto = new CreateUserDto("Jeroen", "Smissaert", "B2051", createAddressDto, userMapper.toContactInformationDto(contactInformation),null);
+
+        UserDto userDto = RestAssured
+                .given()
+                .body(createUserDto)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .when()
+                .port(port)
+                .post("/users")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .as(UserDto.class);
+
+        String listUserDto = RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .when().port(port)
+                .get("/users")
+                .then().assertThat()
+                .statusCode(HttpStatus.OK.value()).extract().asString();
+
+        Assertions.assertThat(listUserDto).contains(userDto.contactInformationDto().emailAddress());
     }
+
+
 }

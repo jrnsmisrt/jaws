@@ -35,13 +35,13 @@ class ParkingLotControllerIntegrationTest {
         Assertions.assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> parkingLotController.createParkingLot(createCreateParkingLotDtoWithInvalidPhoneNumbers()));
     }
 
-    @Test
-    void givenIncorrectDtoWithNullPhoneNumbers_WhenGetAll_thenAllParkingLotsAreReturned(){
-        CreateParkingLotDto createParkingLotDto = createValidCreateParkingLotDto();
-        ParkingLotDto expectedParkingLotDto = parkingLotController.createParkingLot(createParkingLotDto);
-        List<ParkingLotDto> parkingLotDtoList = parkingLotController.getAllParkingLots();
-        Assertions.assertThat(parkingLotDtoList.contains(expectedParkingLotDto));
-    }
+//    @Test
+//    void givenIncorrectDtoWithNullPhoneNumbers_WhenGetAll_thenAllParkingLotsAreReturned(){
+//        CreateParkingLotDto createParkingLotDto = createValidCreateParkingLotDto();
+//        ParkingLotDto expectedParkingLotDto = parkingLotController.createParkingLot(createParkingLotDto);
+//        List<ParkingLotDto> parkingLotDtoList = parkingLotController.getAllParkingLots();
+//        Assertions.assertThat(parkingLotDtoList.contains(expectedParkingLotDto));
+//    }
 
     private CreateParkingLotDto createValidCreateParkingLotDto() {
         ContactInformationDto contactInformationDto = createValidContactInformationDto();
@@ -58,8 +58,6 @@ class ParkingLotControllerIntegrationTest {
         CreateAddressDto parkingAddressDto = new CreateAddressDto("parking street", "parking street number", "parking city", "parking country", 7777);
         return new CreateParkingLotDto("Parking lot name2", Category.UNDERGROUND_BUILDING.name(), 260, 2.99, createContactPersonDto, parkingAddressDto);
     }
-
-
 
     private ContactInformationDto createValidContactInformationDto() {
         return new ContactInformationDto("0123456789", "987654321", "test@test.com");
