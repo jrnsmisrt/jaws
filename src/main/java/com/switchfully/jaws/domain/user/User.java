@@ -1,6 +1,6 @@
 package com.switchfully.jaws.domain.user;
 
-import com.switchfully.jaws.Exceptions.InvalidMemberShipLevelInputException;
+import com.switchfully.jaws.exceptions.InvalidMemberShipLevelInputException;
 
 import com.switchfully.jaws.domain.common.Address;
 import com.switchfully.jaws.domain.common.ContactInformation;

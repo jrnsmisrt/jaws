@@ -1,4 +1,4 @@
-package com.switchfully.jaws.Exceptions;
+package com.switchfully.jaws.exceptions;
 
 import com.switchfully.jaws.domain.user.MemberShipLevel;
 
