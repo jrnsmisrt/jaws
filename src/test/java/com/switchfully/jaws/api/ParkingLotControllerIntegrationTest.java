@@ -11,12 +11,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
 @SpringBootTest
-@ActiveProfiles("integration test")
+@ActiveProfiles("test")
 @AutoConfigureTestDatabase
 class ParkingLotControllerIntegrationTest {
 
@@ -31,17 +32,19 @@ class ParkingLotControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(authorities = "CREATE_PARKING_LOT")
     void createParkingLot_givenIncorrectDtoWithNullPhoneNumbers_thenThrowsIllegalArgumentException() {
         Assertions.assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> parkingLotController.createParkingLot(createCreateParkingLotDtoWithInvalidPhoneNumbers()));
     }
 
-//    @Test
-//    void givenIncorrectDtoWithNullPhoneNumbers_WhenGetAll_thenAllParkingLotsAreReturned(){
-//        CreateParkingLotDto createParkingLotDto = createValidCreateParkingLotDto();
-//        ParkingLotDto expectedParkingLotDto = parkingLotController.createParkingLot(createParkingLotDto);
-//        List<ParkingLotDto> parkingLotDtoList = parkingLotController.getAllParkingLots();
-//        Assertions.assertThat(parkingLotDtoList.contains(expectedParkingLotDto));
-//    }
+    @Test
+    @WithMockUser(authorities = {"GET_PARKING_LOT_OVERVIEW", "CREATE_PARKING_LOT"})
+    void givenIncorrectDtoWithNullPhoneNumbers_WhenGetAll_thenAllParkingLotsAreReturned(){
+        CreateParkingLotDto createParkingLotDto = createValidCreateParkingLotDto();
+        ParkingLotDto expectedParkingLotDto = parkingLotController.createParkingLot(createParkingLotDto);
+        List<ParkingLotDto> parkingLotDtoList = parkingLotController.getAllParkingLots();
+        Assertions.assertThat(parkingLotDtoList.contains(expectedParkingLotDto));
+    }
 
     private CreateParkingLotDto createValidCreateParkingLotDto() {
         ContactInformationDto contactInformationDto = createValidContactInformationDto();

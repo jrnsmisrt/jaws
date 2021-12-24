@@ -1,5 +1,6 @@
 package com.switchfully.jaws.api;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.switchfully.jaws.domain.common.ContactInformation;
 import com.switchfully.jaws.domain.user.User;
 import com.switchfully.jaws.repositories.UserRepository;
@@ -18,13 +19,22 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@AutoConfigureMockMvc
 @ActiveProfiles("test")
 class UserControllerTest {
 
@@ -36,6 +46,9 @@ class UserControllerTest {
 
     @Value("${server.port}")
     private int port;
+
+    @Autowired
+    private MockMvc mockMvc;
 
     @Autowired
     UserControllerTest(UserRepository userRepository, UserService userService) {
@@ -68,7 +81,7 @@ class UserControllerTest {
                 .contentType(ContentType.JSON)
                 .when()
                 .port(port)
-                .post("/users")
+                .post("/public/users")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value())
@@ -377,6 +390,5 @@ class UserControllerTest {
 
         Assertions.assertThat(listUserDto).contains(userDto.contactInformationDto().emailAddress());
     }
-
 
 }
